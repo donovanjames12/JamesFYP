@@ -36,6 +36,7 @@ function RoomList({navigation}) {
         getRooms()
     }, [])
     
+    /* delete room function to removed room item from db and UI */
     function deleteRoom(roomId) {
         db.collection("rooms").doc(roomId).delete()
             .then(() => {

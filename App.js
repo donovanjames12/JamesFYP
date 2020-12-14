@@ -14,6 +14,8 @@ import Room from './components/Room';
 import AddRoomBooking from './components/AddRoomBooking';
 import ViewRoomBookings from './components/ViewRoomBookings';
 import BookingConfirmation from "./components/BookingConfirmation"
+import Login from "./components/Login"
+import Registration from "./components/Registration"
 
 /* Creating a theme which can be usedd application-wide */
 const theme = {
@@ -53,13 +55,15 @@ which ensures it is used across all components mentioned within return statement
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer >
-        <RootStack.Navigator mode="modal" options={{cardStyle:{flex: 1}}}>
-          <RootStack.Screen name="Main" options={{ headerShown: false }}  component={DrawerNavigation} />
+      <NavigationContainer>
+        <RootStack.Navigator mode="modal" initialRouteName="Login" options={{cardStyle:{flex: 1}}}>
+          <RootStack.Screen name="Main" options={{ headerShown: false }} component={DrawerNavigation} />
           <RootStack.Screen name="Add Room" component={AddRoom} />
           <RootStack.Screen name="Add Room Booking" component={AddRoomBooking} />
           <RootStack.Screen name="Room" component={Room} />
           <RootStack.Screen name="Booking Confirmation" options={{ headerShown: false }} component={BookingConfirmation} />
+          <RootStack.Screen name="Login"  options={{ headerShown: false }} component={Login} />
+          <RootStack.Screen name="Registration"  options={{ headerShown: false }} component={Registration} />
         </RootStack.Navigator>     
       </NavigationContainer>
     </ThemeProvider>

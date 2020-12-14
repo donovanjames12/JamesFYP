@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { StyleSheet, View, Text } from "react-native"
 import {Card, Button} from "react-native-elements"
 
- /* Room inputs as props as they can vary and change, returning inputted data */
+ /* Room booking confirmation passed from add room booking displayed here */
 function BookingConfirmation({navigation, route}) {
     return (
         <>

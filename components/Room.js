@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native"
 import { PricingCard, Button, Card, Text} from 'react-native-elements';
 import { db } from "../firebase"
 
- /* Room inputs as props as they can vary and change, returning inputted data */
+ /* Room data being retrieved from db and displayed in cards */
 function Room({navigation, route}) {
     const [room, setRoom] = useState([])
 

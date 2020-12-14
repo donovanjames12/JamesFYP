@@ -24,7 +24,7 @@ function AddRoom({navigation}) {
             setDescription("")
             navigation.goBack()
 
-           alert("Success") 
+         /* error message if room addition unsuccessful*/ 
         }).catch(error => {
             console.log(error.message)
         })

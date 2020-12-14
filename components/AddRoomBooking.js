@@ -7,6 +7,7 @@ import {db} from "../firebase"
 function AddRoomBooking({route, navigation}) {
     const [room, setRoom] = useState(route.params.room)
 
+    /* Setting Booking Variables as blank as they are data which will be inputted by user */ 
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [address, setAddress] = useState("")
@@ -16,6 +17,9 @@ function AddRoomBooking({route, navigation}) {
     const [fromDate, setFromDate] = useState("")
     const [toDate, setToDate] = useState("")
     
+
+    /* function to add rooms to db*/ 
+
     function addBooking() {
         db.collection("roomBookings").doc().set({
             name: name,
@@ -37,6 +41,8 @@ function AddRoomBooking({route, navigation}) {
             setFromDate("")
             setToDate("")
 
+            /*carrying some data forward to booking confirmation*/
+
             navigation.navigate("Booking Confirmation", {
                 name: name, 
                 email: email,
@@ -49,6 +55,10 @@ function AddRoomBooking({route, navigation}) {
     }
 
     return (
+
+        /*Scrollview allowing user to scroll through items */
+
+        /* room info displayed in card above room booking inputs */
         <ScrollView style={styles.view}>
             <Card style={styles.card}>
                 <Card.Title>Room Information</Card.Title>
@@ -114,6 +124,8 @@ function AddRoomBooking({route, navigation}) {
                     onChangeText={text => setToDate(text)} 
                     value={toDate}  
                 />
+
+                    
 
                 <Button title="Confirm Booking" onPress={addBooking}/>
             </Card>
