@@ -18,12 +18,12 @@ function ViewRoomBooking({navigation}) {
                     tempList.push(temp)
                 })
                 setRoomBookingList(tempList)
-                console.log(console.log(tempList))
             }).catch(error => {
                 console.log(error.message)
             })
     }
 
+    // Runs when component is finished rendering. link here https://reactjs.org/docs/hooks-effect.html
     useEffect(() => {
         getRoomBookings()
     }, [])
@@ -48,6 +48,10 @@ function ViewRoomBooking({navigation}) {
             <Text>Card No: {item.cardNo}</Text>
         </Card>
     )
+
+
+
+
 
     return (
         <ScrollView style={styles.view}>

@@ -6,13 +6,13 @@ import { db } from "../firebase.js"
 import { Input, Button, Card } from "react-native-elements"  /* Importing conent from react-native elements library*/
 
  /* Add Room also on navigation panel, allowig user input data
- for price, room type and desciption */
+ for price, room type and desciption  information on useState here https://reactjs.org/docs/hooks-state.html */
 function AddRoom({navigation}) {
     const [price, setPrice] = useState("")
     const [roomType, setRoomType] = useState("")
     const [description, setDescription] = useState("")
 
-     /* Adding inputted data to database*/
+     /* Adding inputted data to database from link https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
     function addRoomToDB() {
         db.collection("rooms").doc().set({
             price: price,
