@@ -37,6 +37,7 @@ function ViewRoomBooking({navigation}) {
             })
     }
 
+    // Item infotmation sent to FlatList
     const Item = ({ item }) => (
         <Card style={styles.card}>
             <Card.Title onPress={() => deleteBooking(item.id)}>{item.name} [X]</Card.Title>
@@ -51,7 +52,7 @@ function ViewRoomBooking({navigation}) {
 
 
 
-
+// flatlist link https://reactnative.dev/docs/flatlist
 
     return (
         <ScrollView style={styles.view}>

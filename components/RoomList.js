@@ -50,10 +50,16 @@ function RoomList({navigation}) {
     /* displaying stored rooms in a card format, sample code obtained from https://reactnativeelements.com/ */
     const Item = ({ item }) => (
         <Card style={styles.card}>
-            <Card.Title onPress={() => deleteRoom(item.id)}>{item.roomType} [X]</Card.Title>
+            <Card.Title onPress={() => deleteRoom(item.id)}>
+                <Text>{item.roomType} [X]</Text>
+            </Card.Title>
             <Card.Divider/>
-            <Card.Title>€{item.price} per night</Card.Title>
-            <Card.Title>{item.description}</Card.Title>
+            <Card.Title>
+                <Text>€{item.price} per night</Text>
+            </Card.Title>
+            <Card.Title>
+                <Text>{item.description}</Text>
+            </Card.Title>
             <Card.Image source={{uri: 'https://diowf2xvnqim4.cloudfront.net/045/060/001/24109/800x600.jpg'}} />
             <Button title="Book" style={styles.button} onPress={() => navigation.navigate("Add Room Booking", {
                 room : item
@@ -63,18 +69,15 @@ function RoomList({navigation}) {
     
     /* returning room list on UI from database*/
     return (
-        <>
-            <View style={styles.view}>
-                <FlatList
-                    data={roomList}
-                    renderItem={Item}
-                    keyExtractor={item => item.id}
-                    style={styles.list}
-                />
-                    <Button title="Add Room" onPress={() => navigation.navigate("Add Room")} />
-{/*                     <Button title="Refresh" onPress={() => getRooms()} />
- */}            </View>
-        </>
+        <View style={styles.view}>
+            <FlatList
+                data={roomList}
+                renderItem={Item}
+                keyExtractor={item => item.id}
+                style={styles.list}
+            />
+            <Button title="Add Room" onPress={() => navigation.navigate("Add Room")} />
+        </View>
     )
 } 
 
