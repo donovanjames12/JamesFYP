@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar'
-import React, {useState} from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { StyleSheet, Text, View} from 'react-native'
 import { ThemeProvider, Button, } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Entypo } from '@expo/vector-icons';
 import {auth} from "./firebase"
+
 import {
   Menu,
   MenuOptions,
@@ -15,11 +16,11 @@ import {
   MenuProvider
 } from 'react-native-popup-menu';
 
+
 /* Importing components into App to be used in main application*/
 import HomePage from './components/HomePage';
 import RoomList from './components/RoomList';
 import AddRoom from './components/AddRoom';
-
 import AddRoomBooking from './components/AddRoomBooking';
 import ViewRoomBookings from './components/ViewRoomBookings';
 import BookingConfirmation from "./components/BookingConfirmation"
@@ -84,15 +85,14 @@ const RootStack = createStackNavigator()
 which ensures it is used across all components mentioned within return statement*/
  /*rootstack.navigator passes navigation prop to every screen (i.e. screens that can access navigation)*/
 export default function App() {
+
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        
+      <NavigationContainer>       
         <RootStack.Navigator mode="modal" initialRouteName="Login" options={{cardStyle:{flex: 1}}}>
           <RootStack.Screen name="Main" options={{ headerShown: false }} component={DrawerNavigation} />
           <RootStack.Screen name="Add Room" component={AddRoom} />
-          <RootStack.Screen name="Add Room Booking" component={AddRoomBooking} />
-        
+          <RootStack.Screen name="Add Room Booking" component={AddRoomBooking} />    
           <RootStack.Screen name="Booking Confirmation" options={{ headerShown: false }} component={BookingConfirmation} />
           <RootStack.Screen name="Login"  options={{ headerShown: false }} component={Login} />
           <RootStack.Screen name="Registration"  options={{ headerShown: false }} component={Registration} />

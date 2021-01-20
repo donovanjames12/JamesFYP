@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { StyleSheet, View, Text, FlatList } from "react-native"
+import { StyleSheet, View, Text, FlatList, ScrollView } from "react-native"
 import { db } from "../firebase"  /* Linking firebase to component */
 import {Card, Button, PricingCard } from "react-native-elements" /* adding react native elements library */
 import { AntDesign } from '@expo/vector-icons';
@@ -69,7 +69,7 @@ function RoomList({navigation}) {
     
     /* returning room list on UI from database*/
     return (
-        <View style={styles.view}>
+        <ScrollView style={styles.view}>
             <FlatList
                 data={roomList}
                 renderItem={Item}
@@ -77,7 +77,7 @@ function RoomList({navigation}) {
                 style={styles.list}
             />
             <Button title="Add Room" onPress={() => navigation.navigate("Add Room")} />
-        </View>
+        </ScrollView>
     )
 } 
 

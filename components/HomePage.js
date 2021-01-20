@@ -25,7 +25,6 @@ function HomePage({navigation}) {
    /* carousel on homepage implemented by https://blog.logrocket.com/using-react-native-to-implement-a-carousel/ */
    
     return (
-    <>
         <SafeAreaView style={styles.container}>
             <TouchableOpacity onPress={() => navigation.navigate("View Our Rooms")}>
                 <Card style={styles.card}>
@@ -44,7 +43,6 @@ function HomePage({navigation}) {
                 </Card>   
             </TouchableOpacity> 
         </SafeAreaView>
-    </>
     ) 
 }
 
