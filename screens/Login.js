@@ -9,7 +9,11 @@ function Login ({navigation}) {
     const image = {uri: "https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/The-Vee-pass.jpg?alt=media&token=4a725138-b7ff-41fe-819a-0255a4a68baf"}
     
     const [email, setEmail] = useState("")
+    const [emailValid, setEmailValid] = useState(false)
+
     const [password, setPassword] = useState("")
+
+    const emailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     function login() {
         auth.signInWithEmailAndPassword(email, password)
@@ -18,7 +22,18 @@ function Login ({navigation}) {
             }).catch(error => {
                 alert(error.message)
                 console.log(error.message)
+     
             })
+    }
+
+    function handleEmail(email) {
+        setEmail(email)
+
+        if(emailFormat.test(email)) {
+            setEmailValid(true)
+        } else {
+            setEmailValid(false)
+        }
     }
     return (
         
@@ -32,7 +47,8 @@ function Login ({navigation}) {
                         label="Email"
                         style={styles.textInput} 
                         leftIcon={<MaterialIcons name="email" size={24} color="grey" />}
-                        onChangeText={text => setEmail(text)} 
+                        rightIcon={emailValid ? <MaterialIcons name="email" size={24} color="green" /> : <AntDesign name="lock" size={24} color="grey" />}
+                        onChangeText={text => handleEmail(text)} 
                         value={email}
                     />
 

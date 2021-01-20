@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { SafeAreaView, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Card, Image, Text, Button, Icon } from "react-native-elements"
-import CarouselCards from './CarouselCards'
 import {db, auth} from "../firebase"
 
  /* HomePage used in navigation bar */
@@ -22,7 +21,6 @@ function HomePage({navigation}) {
         })
     }
     
-   /* carousel on homepage implemented by https://blog.logrocket.com/using-react-native-to-implement-a-carousel/ */
    
     return (
         <SafeAreaView style={styles.container}>
