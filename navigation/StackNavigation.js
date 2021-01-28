@@ -11,8 +11,11 @@ import Login from "../screens/Login"
 import Registration from "../screens/Registration"
 import DrawerNavigation from "./DrawerNavigation"
 
+/* stack navigator documenatation https://reactnavigation.org/docs/stack-navigator */
 const RootStack = createStackNavigator()
 
+ /* navigation property passed down from stack navigator i.e. 'navigation.goBack' 
+ used across application and obtained from https://reactnavigation.org/docs/navigation-prop  */
 function StackNavigation() {
     return(
         <RootStack.Navigator mode="modal" initialRouteName="Login" options={{cardStyle:{flex: 1}}}>

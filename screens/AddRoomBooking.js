@@ -3,11 +3,18 @@ import { StyleSheet, View, Text, ScrollView } from "react-native"
 import {Card, Button, Input, Icon} from "react-native-elements"
 import {db} from "../firebase"
 
- /* Room inputs as props as they can vary and change, returning inputted data */
+ /* AddRoomBooking destructured, route allows for transmission of data in react navigation,
+ see this link for further information: https://reactnavigation.org/docs/route-prop/ 
+ 
+ route parameters also used, passing inputted room data from room card to be viewed on booking page,
+ see route parameters link: https://reactnavigation.org/docs/params/ 
+ additional link also in BookingConfirmation.js */
+
 function AddRoomBooking({route, navigation}) {
     const [room, setRoom] = useState(route.params.room)
 
-    /* Setting Booking Variables as blank as they are data which will be inputted by user */ 
+    /* Setting Booking Variables as blank as they are data which will be inputted by user links in both addRoom
+    and Login */ 
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [address, setAddress] = useState("")
@@ -18,7 +25,8 @@ function AddRoomBooking({route, navigation}) {
     const [toDate, setToDate] = useState("")
     
 
-    /* function to add rooms to db*/ 
+    /* Adding inputted data to database from link:
+     https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
 
     function addBooking() {
         db.collection("roomBookings").doc().set({
@@ -42,7 +50,6 @@ function AddRoomBooking({route, navigation}) {
             setToDate("")
 
             /*carrying some data forward to booking confirmation*/
-
             navigation.navigate("Booking Confirmation", {
                 name: name, 
                 email: email,
@@ -56,9 +63,13 @@ function AddRoomBooking({route, navigation}) {
 
     return (
 
-        /*Scrollview allowing user to scroll through items */
+        /*Scrollview allowing user to scroll through items, NetNinja code explanation 
+        here: https://www.youtube.com/watch?v=W-pg1r6-T0g */
 
-        /* room info displayed in card above room booking inputs */
+        /* room info displayed in card above room booking inputsaccessible via route params,
+        Input options for user to input booking details, button also used which calls
+        addBooking function to adddata to firebase. */
+        
         <ScrollView style={styles.view}>
             <Card style={styles.card}>
                 <Card.Title>Room Information</Card.Title>

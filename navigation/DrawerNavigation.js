@@ -16,11 +16,12 @@ import {auth} from "../firebase"
 
 /* Declaring drawer navigator method*/
 /*Drawer navigation code https://reactnavigation.org/docs/drawer-based-navigation/ */
-/* stack navigator documenatation https://reactnavigation.org/docs/stack-navigator */
+
 const Drawer = createDrawerNavigator();
-/* signout code got from https://firebase.google.com/docs/auth/web/password-auth */
+/* signout code got from https://rnfirebase.io/auth/usage */
 function DrawerNavigation({navigation}) {
-    function signOut() {
+    
+  function signOut() {
       auth.signOut()
       navigation.navigate("Login")
     }
@@ -37,7 +38,7 @@ function DrawerNavigation({navigation}) {
                   <Entypo name="dots-three-vertical" size={24} color="black" />
                 </MenuTrigger> 
                 <MenuOptions>
-                  <MenuOption onSelect={() => signOut()} text='Log Out' />
+                  <MenuOption style={{padding: 15}} onSelect={() => signOut()} text='Log Out' />
                 </MenuOptions>
               </Menu>
           }}>

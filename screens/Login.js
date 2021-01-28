@@ -2,20 +2,20 @@ import React, {useState} from 'react'
 import { StyleSheet, View, ImageBackground } from "react-native"
 import { Button, Card, Input, Text} from 'react-native-elements'
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
-
 import {auth} from "../firebase"
 
 function Login ({navigation}) {
     const image = {uri: "https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/The-Vee-pass.jpg?alt=media&token=4a725138-b7ff-41fe-819a-0255a4a68baf"}
     
-    const [email, setEmail] = useState("")
-    const [emailValid, setEmailValid] = useState(false)
-
-    const [password, setPassword] = useState("")
-
+    /* youtube link explaining useState from NetNinja https://www.youtube.com/watch?v=1FiIYaRr148  */
+    const [email, setEmail] = useState("testing123@gmail.com")
+    const [password, setPassword] = useState("testing123")
     const emailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-    function login() {
+     /* login function code acquired at firebase documentation here: https://firebase.google.com/docs/auth/web/password-auth */
+    /* navigation.navigate function used to move between screens with react navigation see: https://reactnavigation.org/docs/navigating/ */
+   
+     function login() {
         auth.signInWithEmailAndPassword(email, password)
             .then(() => {
                 navigation.navigate('Main')
@@ -26,29 +26,23 @@ function Login ({navigation}) {
             })
     }
 
-    function handleEmail(email) {
-        setEmail(email)
-
-        if(emailFormat.test(email)) {
-            setEmailValid(true)
-        } else {
-            setEmailValid(false)
-        }
-    }
     return (
         
+        /* using useState with Inputs explained on YouTube by NetNinja https://www.youtube.com/watch?v=c9Sg9jDitm8 */
+        /* code for input icons i.e. login + password icons in inputs here: https://icons.expo.fyi/ */
+       
+       
+       <ImageBackground source={image} style={styles.background}>
 
-        <ImageBackground source={image} style={styles.background}>
-
+    
         <View style={styles.view}>
                 <Card style={styles.card}>
-
+    
                     <Input 
                         label="Email"
                         style={styles.textInput} 
                         leftIcon={<MaterialIcons name="email" size={24} color="grey" />}
-                        rightIcon={emailValid ? <MaterialIcons name="email" size={24} color="green" /> : <AntDesign name="lock" size={24} color="grey" />}
-                        onChangeText={text => handleEmail(text)} 
+                        onChangeText={text => setEmail(text)} 
                         value={email}
                     />
 
@@ -69,8 +63,8 @@ function Login ({navigation}) {
            
         </View>
         </ImageBackground>
-
-        
+/* the various props inputs in react native elements can take https://reactnativeelements.com/docs/input/ */
+/* using image backgrounds https://reactnative.dev/docs/imagebackground */
     )
 }
 

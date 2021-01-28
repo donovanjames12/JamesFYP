@@ -34,7 +34,7 @@ function RoomList({navigation}) {
 
     useEffect(() => {
         getRooms()
-    }, [])
+    }, []) 
     
     /* delete room function to removed room item from db and UI */
     function deleteRoom(roomId) {
@@ -69,7 +69,7 @@ function RoomList({navigation}) {
     
     /* returning room list on UI from database*/
     return (
-        <ScrollView style={styles.view}>
+        <>
             <FlatList
                 data={roomList}
                 renderItem={Item}
@@ -77,7 +77,8 @@ function RoomList({navigation}) {
                 style={styles.list}
             />
             <Button title="Add Room" onPress={() => navigation.navigate("Add Room")} />
-        </ScrollView>
+            <Button title="Refresh" onPress={getRooms} />
+        </>
     )
 } 
 
