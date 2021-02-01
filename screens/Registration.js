@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
 import { StyleSheet, View, ImageBackground } from "react-native"
 import { Button, Card, Input, Text} from 'react-native-elements'
-import { MaterialIcons, AntDesign, Entypo } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialIcons, AntDesign, Entypo  } from '@expo/vector-icons';
 import { auth, db } from '../firebase';
 
 /* identical layout to login.js apart from the register() function */
@@ -22,6 +21,11 @@ function Registration ({navigation}) {
     const tickIcon = <AntDesign name="check" size={24} color="green" />
     const crossIcon = <Entypo name="cross" size={24} color="red" />
     
+      /* conditional rendering is used in the inputs, the constants created above are green and red ticks which will be displayed in the event of
+     correct or incorrect information being inputted to notify the user, the condiions of the handlers
+     are created below, then in the inputs at the bottom of this form, shorthand boolean (conditional rendering)
+     is used to display either the red or green icon based on the conditions created, code on how 
+     I learnt to do this can be seen in the official react navigation here: https://reactjs.org/docs/conditional-rendering.html */
 
     function handleEmail(email) {
         setEmail(email)
@@ -55,6 +59,9 @@ function Registration ({navigation}) {
 
     /* register function code aqcuired here: https://rnfirebase.io/auth/usage */
     /* code on how to add docs to db here: https://firebase.google.com/docs/firestore/manage-data/add-data */
+        
+    // Room cannot be added unless the conditions of all input handlers are met
+   
     function register() {
         if(isEmailValid && isPasswordValid && isNameValid) {
             auth.createUserWithEmailAndPassword(email, password)
@@ -72,6 +79,7 @@ function Registration ({navigation}) {
         }   
     }
 
+    // see shorthand conditional rendering as described above in rightIcon below
     return (
         <ImageBackground source={image} style={styles.background}>
 
@@ -83,7 +91,8 @@ function Registration ({navigation}) {
                     style={styles.textInput} 
                     leftIcon={<MaterialIcons name="email" size={24} color="grey" />}
                     rightIcon={isEmailValid ? tickIcon : crossIcon}
-/*                     if(isEmailValid == true) 
+                  // the below code shows what the above conditional rendering is doing
+                    /*  if(isEmailValid == true) 
                     {
                         tickIcon
                     }else {
@@ -106,7 +115,7 @@ function Registration ({navigation}) {
                 <Input 
                     label="Name"
                     style={styles.textInput}   
-                    leftIcon={<MaterialCommunityIcons name="face-profile" size={24} color="grey" />}
+                    leftIcon={<Entypo name="user" size={24} color="grey" />}
                     rightIcon={isNameValid ? tickIcon : crossIcon} 
                     onChangeText={text => handleName(text)} 
                     value={name}

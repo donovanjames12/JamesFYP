@@ -5,9 +5,9 @@ import {db, auth} from "../firebase"
 
  /* HomePage used in navigation bar */
 function HomePage({navigation}) {
-    const [name, setName] = useState("")
+    // const [name, setName] = useState("")
 
-    useEffect(() => {
+   /* useEffect(() => {
         getUserData()
     }) 
 
@@ -20,8 +20,13 @@ function HomePage({navigation}) {
             console.log(error.message)
         })
     }
-    
+    */
    
+    /* SafeAreaView used due to screen components extending beyond the physical
+     remits of the phone screen, code acquired here: https://reactnative.dev/docs/safeareaview */
+
+     /* TouchableOpacity adds onPress ability to components,
+      code for usage acquired here from NetNinja via youtube: https://www.youtube.com/watch?v=QhX25YGf8qg&list=PL4cUxeGkcC9ixPU-QkScoRBVxtPPzVjrQ&index=8*/
     return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity onPress={() => navigation.navigate("View Our Rooms")}>
@@ -29,15 +34,15 @@ function HomePage({navigation}) {
                     <Card.Title>Book Room</Card.Title>
                     <Card.Image source={{uri: "https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/room.jpg?alt=media&token=2bcd4025-7640-4929-93b3-e30d0b23c874"}}>          
                     </Card.Image>
-                    <Text h5 style={styles.text}>Our rooms are fair pure class</Text>
+                    <Text h5 style={styles.text}>Take a look at our rooms here!</Text>
                 </Card>   
             </TouchableOpacity> 
-            <TouchableOpacity onPress={() => navigation.navigate("View Our Rooms")}>
+            <TouchableOpacity onPress={() => navigation.navigate("View Room Bookings")}>
                 <Card style={styles.card}>
-                    <Card.Title>Book Room</Card.Title>
+                    <Card.Title>Current Room Bookings.</Card.Title>
                     <Card.Image source={{uri: "https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/room.jpg?alt=media&token=2bcd4025-7640-4929-93b3-e30d0b23c874"}}>          
                     </Card.Image>
-                    <Text h5 style={styles.text}>Our rooms are fair pure class</Text>
+                    <Text h5 style={styles.text}>See Room Bookings.</Text>
                 </Card>   
             </TouchableOpacity> 
         </SafeAreaView>

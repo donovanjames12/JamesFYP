@@ -12,7 +12,7 @@ function RoomList({navigation}) {
     const [roomList, setRoomList] = useState("")
     
      /* Displaying room information from rooms collection in firebase
-     Temp variable being used to all elements of room including ID
+     Temp variable being used to retrieve all elements of room including ID
      Firebase returns large amounts of unnecessary data info, only id, price, type and description required  */
 
     function getRooms() {
@@ -32,11 +32,18 @@ function RoomList({navigation}) {
         })
     }
 
+   
+ /* useEffect used to only call firestore database once or when changes are made to 
+ the room list being displayed, firestore database was becoming locked without useEffect due to large
+ numbes of database requests being continuouslly made while page was open, using up free usage,
+ this bug was fixed with useEffect, information on how to use it was got from the 
+ following link: https://www.youtube.com/watch?v=K4xfCIRuf54 */
     useEffect(() => {
         getRooms()
     }, []) 
     
-    /* delete room function to removed room item from db and UI */
+    /* delete room function to removed room item from db and UI, code for this function was acquired here:
+    https://firebase.google.com/docs/firestore/manage-data/delete-data*/
     function deleteRoom(roomId) {
         db.collection("rooms").doc(roomId).delete()
             .then(() => {
@@ -48,13 +55,19 @@ function RoomList({navigation}) {
     }
 
     /* displaying stored rooms in a card format, sample code obtained from https://reactnativeelements.com/ */
+   /* Item is created and destructured within cards to display added room information, 
+   code on how items can be destructured can be seen in this youtube link: https://www.youtube.com/watch?v=5_PdMS9CLLI
+   through destructuring an item I could break it downto be displayed in addition to being able
+   delete the card item from the database via its ID which is unique to each item. */
+   
+   
     const Item = ({ item }) => (
         <Card style={styles.card}>
             <Card.Title onPress={() => deleteRoom(item.id)}>
                 <Text>{item.roomType} [X]</Text>
             </Card.Title>
             <Card.Divider/>
-            <Card.Title>
+            <Card.Title>  
                 <Text>€{item.price} per night</Text>
             </Card.Title>
             <Card.Title>
@@ -67,9 +80,12 @@ function RoomList({navigation}) {
         </Card>
     )
     
-    /* returning room list on UI from database*/
+    /* returning room list on UI from database flatlist link https://reactnative.dev/docs/flatlist 
+    NetNinja explains flatlist implementation here: https://www.youtube.com/watch?v=iMCM1NceGJY */
     return (
+       
         <>
+        
             <FlatList
                 data={roomList}
                 renderItem={Item}
@@ -78,7 +94,9 @@ function RoomList({navigation}) {
             />
             <Button title="Add Room" onPress={() => navigation.navigate("Add Room")} />
             <Button title="Refresh" onPress={getRooms} />
+         
         </>
+     
     )
 } 
 

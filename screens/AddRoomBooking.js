@@ -66,7 +66,7 @@ function AddRoomBooking({route, navigation}) {
         /*Scrollview allowing user to scroll through items, NetNinja code explanation 
         here: https://www.youtube.com/watch?v=W-pg1r6-T0g */
 
-        /* room info displayed in card above room booking inputsaccessible via route params,
+        /* room info displayed in card above room booking inputs accessible via route params,
         Input options for user to input booking details, button also used which calls
         addBooking function to adddata to firebase. */
         

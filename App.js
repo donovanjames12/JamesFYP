@@ -17,7 +17,11 @@ const theme = {
 
 /* The drawer inputs placed wihin a themeprovidor 
 which ensures it is used across all components mentioned within return statement*/
- /*rootstack.navigator passes navigation prop to every screen (i.e. screens that can access navigation)*/
+ 
+/* The app compnent is the central component of the whole project,
+the navigation container is essentially storing my whole project as the stack navigator
+contains all screens (drawer navigation also part of the stack) Information on 
+the navigation container can be seen here at he official ract documenatation: https://reactnative.dev/docs/navigation */
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
