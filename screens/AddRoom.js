@@ -65,7 +65,7 @@ function AddRoom({navigation}) {
             db.collection("rooms").doc().set({
                 price: price,    
                 roomType: roomType,
-                description: description
+                description: description, 
             }).then(() => {
                 setPrice("")
                 setRoomType("")

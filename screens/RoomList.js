@@ -11,22 +11,25 @@ function RoomList({navigation}) {
      /*Creating a constant to store room list inputs, cannot be changed with useState */
     const [roomList, setRoomList] = useState("")
     
-     /* Displaying room information from rooms collection in firebase
-     Temp variable being used to retrieve all elements of room including ID
-     Firebase returns large amounts of unnecessary data info, only id, price, type and description required  */
+     /* 
+        All documents being retrieved from "rooms" collection.
+        They are stored in an array in "docs" variable.  
+        ForEach loops through this array. 
+       */
 
     function getRooms() {
         db.collection("rooms").get()
         .then(docs => {
             var tempList = []
+
             docs.forEach(doc => {
-                var tempRoom    
+                var tempRoom
                 tempRoom = doc.data()
-                tempRoom.id = doc.id
+                tempRoom.id = doc.id    
                 tempList.push(tempRoom)
             })
-            setRoomList(tempList)
-            console.log(console.log(tempList))
+            
+           setRoomList(tempList)
         }).catch(error => {
             alert(error.message)
         })
@@ -61,8 +64,8 @@ function RoomList({navigation}) {
    delete the card item from the database via its ID which is unique to each item. */
    
    
-    const Item = ({ item }) => (
-        <Card style={styles.card}>
+    const item = ({ item }) => (
+        <Card>
             <Card.Title onPress={() => deleteRoom(item.id)}>
                 <Text>{item.roomType} [X]</Text>
             </Card.Title>
@@ -75,20 +78,26 @@ function RoomList({navigation}) {
             </Card.Title>
             <Card.Image source={{uri: 'https://diowf2xvnqim4.cloudfront.net/045/060/001/24109/800x600.jpg'}} />
             <Button title="Book" style={styles.button} onPress={() => navigation.navigate("Add Room Booking", {
-                room : item
+                room: item
             })}/>
         </Card>
     )
     
     /* returning room list on UI from database flatlist link https://reactnative.dev/docs/flatlist 
     NetNinja explains flatlist implementation here: https://www.youtube.com/watch?v=iMCM1NceGJY */
+
+     // data = roomBookingList created in getRoomBookings function
+    // renderItem is the item to be displayed in the flatlist, i.e. the above card item
+    // the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
+    // styles are simply how you wish to style the item with the below stylesheet
+    
     return (
        
         <>
         
             <FlatList
                 data={roomList}
-                renderItem={Item}
+                renderItem={item}
                 keyExtractor={item => item.id}
                 style={styles.list}
             />

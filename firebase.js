@@ -22,3 +22,5 @@ export const db = firebase.firestore()
 export const storage = firebase.storage()
 
 /* information on installing firebase authentication https://rnfirebase.io/auth/usage */
+
+// Setting up firebaseConfig and exporting db to components: https://blog.logrocket.com/storing-retrieving-data-react-native-apps-firebase/

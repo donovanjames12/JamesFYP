@@ -63,8 +63,8 @@ function ViewRoomBooking({navigation}) {
 
     // data = roomBookingList created in getRoomBookings function
     // renderItem is the item to be displayed in the flatlist, i.e. the above card item
-    // the key extractor is how the item is identified, in this case it is by the firestore database ID.
-    // styles are simply howyou wish to style the item with the below stylesheet
+    // the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
+    // styles are simply how you wish to style the item with the below stylesheet
     return (
         <ScrollView style={styles.view}>
              <FlatList
@@ -77,10 +77,13 @@ function ViewRoomBooking({navigation}) {
     )
 }
 
+//https://cssinjs.org/?v=v10.5.1
+// Written in JSS. 
 const styles = StyleSheet.create({
     view: {
        
-    }
+
+    },
 })
 
 export default ViewRoomBooking

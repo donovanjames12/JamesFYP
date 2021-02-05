@@ -15,7 +15,12 @@ function Registration ({navigation}) {
     const [isEmailValid, setIsEmailValid] = useState(false)
     const [isPasswordValid, setIsPasswordValid] = useState(false)
     const [isNameValid, setIsNameValid] = useState(false)
-
+    
+    /* The below constant is email regex, regex can be used as test validation for inputs such
+    as emails, currencies etc. different variations are used and created by people online,
+    anyone can make them if they know how, I copied this from a stack overflow forum.
+    I use the regex in the below email handler to test if the user is registering with
+    a valid email or not. */
     const emailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     const tickIcon = <AntDesign name="check" size={24} color="green" />
@@ -61,13 +66,17 @@ function Registration ({navigation}) {
     /* code on how to add docs to db here: https://firebase.google.com/docs/firestore/manage-data/add-data */
         
     // Room cannot be added unless the conditions of all input handlers are met
+
+    /* firebase auth used to register account, then result object is created
+    which contains the users information, the users ID is then obtained from this
+    object information and is used to store the uses name in the firestore database. */
    
     function register() {
         if(isEmailValid && isPasswordValid && isNameValid) {
             auth.createUserWithEmailAndPassword(email, password)
-            .then(user => {
+            .then(result => {
                 alert("Account created, you may now login")
-                db.collection("users").doc(user.user.uid).set({
+                db.collection("users").doc(result.user.uid).set({
                     name: name
                 }).catch(error => {
                     console.log(error.message)
