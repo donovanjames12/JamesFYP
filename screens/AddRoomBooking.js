@@ -181,7 +181,7 @@ function AddRoomBooking({route, navigation}) {
         addBooking function to adddata to firebase. */
         
          // see shorthand conditional rendering as described above in rightIcon below
-         
+
         <ScrollView style={styles.view}>
             <Card style={styles.card}>
                 <Card.Title>Room Information</Card.Title>
@@ -226,7 +226,7 @@ function AddRoomBooking({route, navigation}) {
                 />
 
                 <Input 
-                    label="Group Size (Max 99)"
+                    label="No. Guests (Max 2 Per Room!"
                     style={styles.textInput} 
                     rightIcon={isGroupValid ? tickIcon : crossIcon}  
                     onChangeText={text => handleGroup(text)}  
@@ -265,8 +265,12 @@ function AddRoomBooking({route, navigation}) {
             </Card>
 
             <Card>
-                <Text H8>Book Now and pay upon arrival!</Text>
-                <Text H8>Please Note: Failure to cancel or Not notifying us of a 'No-Show' Results in 65$ fee. </Text>
+            <Card.Title>**Room Booking Useful Info**</Card.Title>
+                <Card.Divider />
+                <Text  style={styles.text}>Book Now and pay upon arrival!</Text>
+                <Text  style={styles.text}>Please Note: Failure to cancel or Not notifying us of a 'No-Show' Results in 65$ fee. </Text>
+                <Text  style={styles.text}>Max 2 persons per room.</Text>
+                <Text  style={styles.text}>To CANCEL, call me @ 087-23345435</Text>
             </Card>
         </ScrollView>
     )

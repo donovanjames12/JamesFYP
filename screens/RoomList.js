@@ -6,6 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 
+
 /* Room List added to navigation slider*/
 function RoomList({navigation}) {
      /*Creating a constant to store room list inputs, cannot be changed with useState */
@@ -90,7 +91,9 @@ function RoomList({navigation}) {
     // renderItem is the item to be displayed in the flatlist, i.e. the above card item
     // the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
     // styles are simply how you wish to style the item with the below stylesheet
+
     
+
     return (
        
         <>
@@ -104,6 +107,7 @@ function RoomList({navigation}) {
             <Button title="Add Room" onPress={() => navigation.navigate("Add Room")} />
             <Button title="Refresh" onPress={getRooms} />
          
+           
         </>
      
     )

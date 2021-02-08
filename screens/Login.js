@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
-import { StyleSheet, View, ImageBackground } from "react-native"
+import { StyleSheet, View, ImageBackground, SafeAreaView } from "react-native"
 import { Button, Card, Input, Text} from 'react-native-elements'
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import {auth} from "../firebase"
+import { ScrollView } from 'react-native-gesture-handler';
 
 function Login ({navigation}) {
     const image = {uri: "https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/The-Vee-pass.jpg?alt=media&token=4a725138-b7ff-41fe-819a-0255a4a68baf"}
@@ -31,10 +32,10 @@ function Login ({navigation}) {
         /* using useState with Inputs explained on YouTube by NetNinja https://www.youtube.com/watch?v=c9Sg9jDitm8 */
         /* code for input icons i.e. login + password icons in inputs here: https://icons.expo.fyi/ */
        
-       
+      
        <ImageBackground source={image} style={styles.background}>
 
-    
+     
         <View style={styles.view}>
                 <Card style={styles.card}>
     
@@ -63,6 +64,7 @@ function Login ({navigation}) {
            
         </View>
         </ImageBackground>
+       
 /* the various props inputs in react native elements can take https://reactnativeelements.com/docs/input/ */
 /* using image backgrounds https://reactnative.dev/docs/imagebackground */
     )
@@ -86,7 +88,14 @@ const styles = StyleSheet.create({
     background: {
         height: "100%",
         width: "100%"
-    }
+    },
+    container: {
+        backgroundColor: '#fff',
+        width: "100%",
+        maxWidth: 800,
+        marginLeft: "auto",
+        marginRight: "auto"
+    },
     
 })
 

@@ -66,14 +66,17 @@ function ViewRoomBooking({navigation}) {
     // the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
     // styles are simply how you wish to style the item with the below stylesheet
     return (
-        <ScrollView style={styles.view}>
+       <> 
              <FlatList
                 data={roomBookingList}
                 renderItem={Item}
                 keyExtractor={item => item.id}
                 style={styles.list}
             />
-        </ScrollView>
+         <Button title="Refresh" onPress={getRoomBookings} />
+
+            </>
+            
     )
 }
 
