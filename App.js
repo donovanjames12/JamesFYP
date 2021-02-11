@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import StackNavigation from "./navigation/StackNavigation"
 
 
-/* Creating a theme which can be usedd application-wide linke at https://reactnativeelements.com/docs/customization/  */
+/* Creating a theme which can be usedd application-wide link at https://reactnativeelements.com/docs/customization/  */
 const theme = {
   Button: {
     

@@ -9,8 +9,8 @@ function Login ({navigation}) {
     const image = {uri: "https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/The-Vee-pass.jpg?alt=media&token=4a725138-b7ff-41fe-819a-0255a4a68baf"}
     
     /* youtube link explaining useState from NetNinja https://www.youtube.com/watch?v=1FiIYaRr148  */
-    const [email, setEmail] = useState("testing123@gmail.com")
-    const [password, setPassword] = useState("testing123")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const emailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
      /* login function code acquired at firebase documentation here: https://firebase.google.com/docs/auth/web/password-auth */

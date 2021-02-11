@@ -14,32 +14,36 @@ import ViewRoomBookings from "../screens/ViewRoomBookings"
 import { Entypo } from '@expo/vector-icons';
 import {auth} from "../firebase"
 
-/* Declaring drawer navigator method*/
+/* Declaring drawer navigator*/
 /*Drawer navigation code https://reactnavigation.org/docs/drawer-based-navigation/ */
 
 const Drawer = createDrawerNavigator();
+
 /* signout code got from https://rnfirebase.io/auth/usage */
 function DrawerNavigation({navigation}) {
     
   function signOut() {
-      auth.signOut()
-      navigation.navigate("Login")
+      auth.signOut()                // user signed out of firebase authentication
+      navigation.navigate("Login")  // user returned to login screen
     }
   
-     /* drawer navigation code and explanation https://reactnavigation.org/docs/drawer-navigator  */
+     
      /* menu providor code here https://www.npmjs.com/package/react-native-popup-menu */ 
+   
+   // Menu provider button added to right side of drawer header, signout function called when button is selected
+   // Code for icons on header obtained here: https://icons.expo.fyi/
      return (
       <MenuProvider>
         <Drawer.Navigator initialRouteName="Home" screenOptions={{
             headerShown:true, 
-            headerRight: () => 
+            headerRight: () => // menu provider being used on right side of drawer hader
               <Menu>
-                <MenuTrigger>
-                  <Entypo name="dots-three-vertical" size={24} color="black" />
+                <MenuTrigger> 
+                  <Entypo name="dots-three-vertical" size={24} color="black" /> 
                 </MenuTrigger> 
                 <MenuOptions>
-                  <MenuOption style={{padding: 15}} onSelect={() => signOut()} text='Log Out' />
-                </MenuOptions>
+                  <MenuOption style={{padding: 15}} onSelect={() => signOut()} text='Log Out' /> 
+                </MenuOptions> 
               </Menu>
           }}>
           <Drawer.Screen name="Home" component={HomePage} />

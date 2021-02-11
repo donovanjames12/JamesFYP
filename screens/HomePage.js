@@ -5,22 +5,6 @@ import {db, auth} from "../firebase"
 
  /* HomePage used in navigation bar */
 function HomePage({navigation}) {
-    // const [name, setName] = useState("")
-
-   /* useEffect(() => {
-        getUserData()
-    }) 
-
-    function getUserData() {
-        db.collection("users").doc(auth.currentUser.uid).get()
-        .then(userData => {
-            setName(userData.data().name)
-           
-        }).catch(error => {
-            console.log(error.message)
-        })
-    }
-    */
    
     /* SafeAreaView used due to screen components extending beyond the physical
      remits of the phone screen, code acquired here: https://reactnative.dev/docs/safeareaview */
@@ -68,5 +52,6 @@ const styles = StyleSheet.create({
         marginLeft: "auto",
         marginRight: "auto"
     },
-  });
+});
+
 export default HomePage;

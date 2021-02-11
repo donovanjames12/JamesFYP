@@ -1,8 +1,8 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { StyleSheet, View, Text, ScrollView } from "react-native"
 import {Card, Button, Input, Icon} from "react-native-elements"
 import { MaterialIcons, AntDesign, Entypo  } from '@expo/vector-icons';
-import {db} from "../firebase"
+import {db, auth} from "../firebase"
 
  /* AddRoomBooking destructured, route allows for transmission of data in react navigation,
  see this link for further information: https://reactnavigation.org/docs/route-prop/ 
@@ -12,8 +12,9 @@ import {db} from "../firebase"
  additional link also in BookingConfirmation.js */
 
 function AddRoomBooking({route, navigation}) {
-    const [room, setRoom] = useState(route.params.room)
+    const [room, setRoom] = useState(route.params.room) // room id transferred here to use with room booking function below
 
+    // these constants are the same as AddRoom, used for conditional inputs
     const [isNameValid, setIsNameValid] = useState(false)
     const [isEmailValid, setIsEmailValid] = useState(false)
     const [isAddressValid, setIsAddressValid] = useState(false)
@@ -28,15 +29,17 @@ function AddRoomBooking({route, navigation}) {
     anyone can make them if they know how, I copied this from a stack overflow forum.
     I use the regex in the below email handler to test if the user is registering with
     a valid email or not. */
+    // essentially making sure that email used ends in '.com' etc
     const emailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
+     
+    // Creating icons to be used for input validation, icon code link here:  https://icons.expo.fyi/
     const tickIcon = <AntDesign name="check" size={24} color="green" />
     const crossIcon = <Entypo name="cross" size={24} color="red" />
     
     /* Setting Booking Variables as blank as they are data which will be inputted by user links in both addRoom
     and Login */ 
     const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState(auth.currentUser.email)
     const [address, setAddress] = useState("")
     const [contactNo, setContactNo] = useState("")
     const [groupSize, setGroupSize] = useState("")
@@ -50,6 +53,8 @@ function AddRoomBooking({route, navigation}) {
      is used to display either the red or green icon based on the conditions created, code on how 
      I learnt to do this can be seen in the official react navigation here: https://reactjs.org/docs/conditional-rendering.html */
 
+
+
      function handleEmail(email) {
         setEmail(email)
 
@@ -60,6 +65,8 @@ function AddRoomBooking({route, navigation}) {
         }
     }
 
+    //eg: if address input length is less than 3, cross icon appears
+    // otherwise tick icon appears
     function handleAddress(address) {
         setAddress(address)
 
@@ -94,7 +101,7 @@ function AddRoomBooking({route, navigation}) {
     function handleGroup(groupSize) {
         setGroupSize(groupSize)
 
-        if(groupSize.length >= 3) {
+        if(groupSize > 2) {
             setIsGroupValid(false)
         } else {
             setIsGroupValid(true)
@@ -140,7 +147,7 @@ function AddRoomBooking({route, navigation}) {
         if(isNameValid && isEmailValid && isAddressValid && isContactNoValid && isGroupValid
              && isCardNoValid && isFromDateValid && toDate ) 
         db.collection("roomBookings").doc().set({
-            name: name,
+            name: name,  // once conditions are met, data added to roomBookings collection
             email: email,
             address: address, 
             contactNo: contactNo, 
@@ -148,10 +155,10 @@ function AddRoomBooking({route, navigation}) {
             cardNo: cardNo,
             fromDate: fromDate,
             toDate: toDate,
-            roomId: route.params.room.id
+            roomId: route.params.room.id // room id also added to datbase to identify the room booked
         }).then(() => {
             setName("")
-            setEmail("")
+            setEmail("")  // data then returned to default values 
             setAddress("")
             setContactNo("")
             setGroupSize("")
@@ -161,8 +168,8 @@ function AddRoomBooking({route, navigation}) {
 
             /*carrying some data forward to booking confirmation, this is via navigation routes*/
             navigation.navigate("Booking Confirmation", {
-                name: name, 
-                email: email,
+                name: name,   // once below button clicked and successful, navigated to booking confirmation
+                email: email, // name, emails and dates are also routed to booking confirmation as the second parmeter
                 fromDate: fromDate,
                 toDate: toDate
             })
@@ -179,11 +186,11 @@ function AddRoomBooking({route, navigation}) {
         /* room info displayed in card above room booking inputs accessible via route params,
         Input options for user to input booking details, button also used which calls
         addBooking function to adddata to firebase. */
-        
+         // card code acquired from react native elements: https://reactnativeelements.com/docs/card/
          // see shorthand conditional rendering as described above in rightIcon below
 
         <ScrollView style={styles.view}>
-            <Card style={styles.card}>
+            <Card style={styles.card}> 
                 <Card.Title>Room Information</Card.Title>
                 <Card.Divider />
                 <Text style={styles.text}>{room.roomType}</Text>
@@ -195,8 +202,8 @@ function AddRoomBooking({route, navigation}) {
                 <Input 
                     label="Name"
                     style={styles.textInput}   
-                    rightIcon={isNameValid ? tickIcon : crossIcon}  
-                    onChangeText={text => handleName(text)}  
+                    rightIcon={isNameValid ? tickIcon : crossIcon} //conditional rendering using above constants and handlers 
+                    onChangeText={text => handleName(text)}   // when text is entered, handler requirements checked
                     value={name}       
                 />
 
@@ -261,10 +268,11 @@ function AddRoomBooking({route, navigation}) {
 
                     
 
-                <Button title="Confirm Booking" onPress={addBooking}/>
+                <Button title="Confirm Booking" onPress={addBooking}/> 
             </Card>
 
             <Card>
+            
             <Card.Title>**Room Booking Useful Info**</Card.Title>
                 <Card.Divider />
                 <Text  style={styles.text}>Book Now and pay upon arrival!</Text>
