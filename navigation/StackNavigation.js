@@ -11,9 +11,8 @@ import Login from "../screens/Login"
 import Registration from "../screens/Registration"
 import DrawerNavigation from "./DrawerNavigation"
 
-/* stack navigator documenatation https://reactnavigation.org/docs/stack-navigator 
-in conjunction also with this link: 
-https://heartbeat.fritz.ai/getting-started-with-stack-navigator-using-react-navigation-5-in-react-native-and-expo-apps-4c516becaee1*/
+// stack navigator documenatation https://reactnavigation.org/docs/stack-navigator 
+
 const RootStack = createStackNavigator()
 
  

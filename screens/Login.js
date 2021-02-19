@@ -3,7 +3,7 @@ import { StyleSheet, View, ImageBackground, SafeAreaView } from "react-native"
 import { Button, Card, Input, Text} from 'react-native-elements'
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import {auth} from "../firebase"
-import { ScrollView } from 'react-native-gesture-handler';
+
 
 function Login ({navigation}) {
     const image = {uri: "https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/The-Vee-pass.jpg?alt=media&token=4a725138-b7ff-41fe-819a-0255a4a68baf"}
@@ -11,8 +11,7 @@ function Login ({navigation}) {
     /* youtube link explaining useState from NetNinja https://www.youtube.com/watch?v=1FiIYaRr148  */
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const emailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
+   
      /* login function code acquired at firebase documentation here: https://firebase.google.com/docs/auth/web/password-auth */
     /* navigation.navigate function used to move between screens with react navigation see: https://reactnavigation.org/docs/navigating/ */
    
@@ -60,8 +59,7 @@ function Login ({navigation}) {
 
 
                     <Button style={styles.text} title="Login" onPress={() => login()}/>
-                </Card>
-           
+                </Card>  
         </View>
         </ImageBackground>
        

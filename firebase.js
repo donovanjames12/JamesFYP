@@ -2,6 +2,7 @@ import firebase from 'firebase'
 import 'firebase/auth'
 import 'firebase/firestore'
 
+
 var firebaseConfig = {
     apiKey: "AIzaSyCdA3J3231SG1LhDK7L78gK2QoEYKBaMlM",
     authDomain: "fypjames-a754f.firebaseapp.com",
@@ -11,8 +12,6 @@ var firebaseConfig = {
     messagingSenderId: "131310800444",
     appId: "1:131310800444:web:b8074890fc73c55e0b3d39",
     measurementId: "G-ZR7T54L8Z9"
-
- 
 }
 
 firebase.initializeApp(firebaseConfig);

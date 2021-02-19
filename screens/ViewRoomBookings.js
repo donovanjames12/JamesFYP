@@ -10,6 +10,8 @@ function ViewRoomBooking({navigation}) {
     const [roomBookingList, setRoomBookingList] = useState([])
     const [rooms, setRooms] = useState([])
 
+    // code is for the floating button, code obtained here: https://www.npmjs.com/package/react-native-floating-action
+    // once floating button is clicked, this is what appears
     const actions = [
         {
           text: "Refresh",
@@ -53,7 +55,6 @@ function ViewRoomBooking({navigation}) {
             .then(() => {
                 getRoomBookings()
             }).catch(error => {
-                console.log(error.message)
             })
     }
 
@@ -73,20 +74,24 @@ function ViewRoomBooking({navigation}) {
             <Text>Room Number: 5</Text>
         </Card>
     )
-
+// handler to instruct floati ng button actions on what to do when pressed
+// NetNinja video using on click handlers https://www.youtube.com/watch?v=PMX6GP1TXGo
     const handleClick = (name) => {
         if(name == "floatingRefresh") {
             getRoomBookings()
         } 
     }
 
-/* returning room list on UI from database flatlist link https://reactnative.dev/docs/flatlist 
-    NetNinja explains flatlist implementation here: https://www.youtube.com/watch?v=iMCM1NceGJY */
+
+    //NetNinja explains flatlist implementation here: https://www.youtube.com/watch?v=iMCM1NceGJY */
 
     // data = roomBookingList populated in getRoomBookings function
     // renderItem is the item to be displayed in the flatlist, i.e. the above card item
     // the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
     // styles are simply how you wish to style the item with the below stylesheet
+   
+    // floating acion button being called below, link from: https://www.npmjs.com/package/react-native-floating-action
+    
     return (
        <> 
              <FlatList
@@ -106,8 +111,7 @@ function ViewRoomBooking({navigation}) {
     )
 }
 
-//https://cssinjs.org/?v=v10.5.1
-// Written in JSS. 
+
 const styles = StyleSheet.create({
     view: {
        

@@ -1,16 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, Image } from 'react-native'
-import { db } from "../firebase.js" 
+import { db, storage } from "../firebase.js" 
 import { Input, Button, Card } from "react-native-elements"  /* Importing conent from react-native elements library*/
 import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons';
- 
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
- /* destructuring such as ({ navigation }) explined here: https://stackoverflow.com/questions/61217909/react-native-apis-why-use-destructuring-with-just-one-parameter
- in addition to be an occurring reference in the net ninja react native tutorial videos */
- 
- // Basically means that for example I can say navigation.navigate instead of props.navigation.navigate
-
- function AddRoom({navigation}) {
+function AddRoom({navigation}) {
     
     //NetNinja explaning useState via Youtube:  https://www.youtube.com/watch?v=1FiIYaRr148 
     const [price, setPrice] = useState("") // initial useState Values in brackets
@@ -20,17 +16,45 @@ import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons';
     const [isRoomTypeValid, setIsRoomTypeValid] = useState(false) // they are false here as I am using boolean and conditional rendering
     const [isPriceValid, setIsPriceValid] = useState(false)
     const [isDescriptionValid, setIsDescriptionValid] = useState(false)
-
     
     // Creating icons to be used for input validation, icon code link here:  https://icons.expo.fyi/
     const tickIcon = <AntDesign name="check" size={24} color="green" />
     const crossIcon = <Entypo name="cross" size={24} color="red" />
+
+    const [image, setImage] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+          if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+              alert('Sorry, we need camera roll permissions to make this work!');
+            }
+          }
+        })();
+      }, []);
+
+      const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+      };
 
     /* conditional rendering is used in the inputs, the constants created above are green and red ticks which will be displayed in the event of
      correct or incorrect information being inputted to notify the user, the condiions of the handlers
      are created below, then in the inputs at the bottom of this form, shorthand boolean (conditional rendering)
      is used to display either the red or green icon based on the conditions created, code on how 
      I learnt to do this can be seen in the official react documentation here: https://reactjs.org/docs/conditional-rendering.html */
+     // see inline if-else conditional operator 
     function handlePrice(amount) {
         setPrice(amount)
 
@@ -67,11 +91,13 @@ import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons';
    
      function addRoomToDB() {
         if(isPriceValid && isRoomTypeValid && isDescriptionValid) {
-            db.collection("rooms").doc().set({
+            db.collection("rooms").add({
                 price: price,     // once conditions met, data is added to rooms collection
                 roomType: roomType,
                 description: description, 
-            }).then(() => {
+            }).then(docRef => {
+                uploadImage(docRef.id)
+
                 setPrice("")     // once added, the room fields are cleared again for future input
                 setRoomType("")
                 setDescription("")
@@ -81,7 +107,15 @@ import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons';
                 alert(error.message)
             })
         }
-       
+    
+    }
+
+    async function uploadImage(id){
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const ref = storage.ref().child(`rooms/${id}`);
+        const snapshot = await ref.put(blob);
+        return snapshot.downloadURL;
     }
 
      /* input options for data, with button which calls above function to add data to database
@@ -117,8 +151,9 @@ import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons';
                 rightIcon={isDescriptionValid ? tickIcon : crossIcon}
             />
 
-            <Button title="Add Room" onPress={addRoomToDB}/>
-
+        <Button title="Pick an image from camera roll" onPress={pickImage} />
+        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+        <Button title="Add Room" onPress={addRoomToDB}/>
         </Card>
 
         </>
@@ -126,10 +161,7 @@ import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons';
 }
 
 const styles = StyleSheet.create({
-/*     view: {
-        maxWidth: "1000px",
-        margin: "auto"
-    } */
+
 })
 
 export default AddRoom

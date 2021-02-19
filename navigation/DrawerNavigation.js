@@ -26,8 +26,7 @@ function DrawerNavigation({navigation}) {
       auth.signOut()                // user signed out of firebase authentication
       navigation.navigate("Login")  // user returned to login screen
     }
-  
-     
+   
      /* menu providor code here https://www.npmjs.com/package/react-native-popup-menu */ 
    
    // Menu provider button added to right side of drawer header, signout function called when button is selected
@@ -49,7 +48,7 @@ function DrawerNavigation({navigation}) {
           <Drawer.Screen name="Home" component={HomePage} />
           <Drawer.Screen name="View Our Rooms" component={RoomList} />
           <Drawer.Screen name="View Room Bookings" component={ViewRoomBookings} />
-        </Drawer.Navigator>
+        </Drawer.Navigator>    
       </MenuProvider>  
     )
   }

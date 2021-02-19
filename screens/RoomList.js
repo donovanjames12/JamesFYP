@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { StyleSheet, View, Text, FlatList, ScrollView } from "react-native"
-import { db } from "../firebase"  /* Linking firebase to component */
+import { db, storage } from "../firebase"  /* Linking firebase to component */
 import {Card, Button, PricingCard } from "react-native-elements" /* adding react native elements library */
 import { AntDesign } from '@expo/vector-icons';
 import { FloatingAction } from "react-native-floating-action";
@@ -10,6 +10,8 @@ function RoomList({navigation}) {
      /*Creating a constant to store room list inputs, cannot be changed with useState */
     const [roomList, setRoomList] = useState("")
     
+    // code is for the floating button, code obtained here: https://www.npmjs.com/package/react-native-floating-action
+    // once floating button is clicked, this is what appears
     const actions = [
         {
           text: "Refresh",
@@ -57,7 +59,7 @@ function RoomList({navigation}) {
     }, []) 
     
     /* delete room function to remove room item from db and UI, code for this function was acquired here:
-    https://firebase.google.com/docs/firestore/manage-data/delete-data*/
+    https://firebase.google.com/docs/firestore/manage-data/delete-data */
     function deleteRoom(roomId) {
         db.collection("rooms").doc(roomId).delete()
             .then(() => {
@@ -69,10 +71,7 @@ function RoomList({navigation}) {
     }
 
     /* displaying stored rooms in a card format, sample code obtained from https://reactnativeelements.com/ */
-   /* Item is created and destructured within cards to display added room information, 
-   code on how items can be destructured can be seen in this youtube link: https://www.youtube.com/watch?v=5_PdMS9CLLI
-   through destructuring an item I could break it downto be displayed in addition to being able
-   delete the card item from the database via its ID which is unique to each item. */
+  //NetNinja explains item breakdown in flatlist video below
    
    
     const item = ({ item }) => (
@@ -87,21 +86,18 @@ function RoomList({navigation}) {
             <Card.Title>
                 <Text>{item.description}</Text>
             </Card.Title>
-            <Card.Image source={{uri: 'https://diowf2xvnqim4.cloudfront.net/045/060/001/24109/800x600.jpg'}} />
+            <Card.Image source={{uri: storage.ref().child(`/rooms/${item.id}`)}} />
             <Button title="Book" style={styles.button} onPress={() => navigation.navigate("Add Room Booking", {
                 room: item
             })}/>
         </Card>
     )
     
-    /* returning room list on UI from database flatlist link https://reactnative.dev/docs/flatlist 
-    NetNinja explains flatlist implementation here: https://www.youtube.com/watch?v=iMCM1NceGJY */
+    
+   // NetNinja explains flatlist implementation here: https://www.youtube.com/watch?v=iMCM1NceGJY */
 
-     // data = roomList populated in getRooms function
-    // renderItem is the item to be displayed in the flatlist, i.e. the above card item
-    // the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
-    // styles are simply how you wish to style the item with the below stylesheet
-
+// handler to instruct floating button actions on what to do when pressed
+// NetNinja video using on click handlers https://www.youtube.com/watch?v=PMX6GP1TXGo
     const handleClick = (name) => {
         if(name == "floatingAdd") {
             navigation.navigate("Add Room")
@@ -109,7 +105,24 @@ function RoomList({navigation}) {
             getRooms()
         }
     }
+     // data = roomList populated in getRooms function
+    // renderItem is the item to be displayed in the flatlist, i.e. the above card item
+    // the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
+    // styles are simply how you wish to style the item with the below stylesheet
 
+    useEffect(() => {
+        getImageUrl()
+    }, [])
+    const getImageUrl = () => {
+        const ref = storage.ref().child(`/rooms/${item.id}`);
+        ref.put(blob).then(snapshot => {
+          snapshot.ref.getDownloadURL().then(url => {
+            console.log(' * new url', url)
+          })
+        })
+    }
+  
+ // flating acion button being called below, link from: https://www.npmjs.com/package/react-native-floating-action
     return (     
         <>      
             <FlatList

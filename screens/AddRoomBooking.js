@@ -28,10 +28,10 @@ function AddRoomBooking({route, navigation}) {
     as emails, currencies etc. different variations are used and created by people online,
     anyone can make them if they know how, I copied this from a stack overflow forum.
     I use the regex in the below email handler to test if the user is registering with
-    a valid email or not. */
+    a valid email or not. https://emailregex.com/ */
     // essentially making sure that email used ends in '.com' etc
-    const emailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-     
+    const emailFormat = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+
     // Creating icons to be used for input validation, icon code link here:  https://icons.expo.fyi/
     const tickIcon = <AntDesign name="check" size={24} color="green" />
     const crossIcon = <Entypo name="cross" size={24} color="red" />
@@ -52,8 +52,6 @@ function AddRoomBooking({route, navigation}) {
      are created below, then in the inputs at the bottom of this form, shorthand boolean (conditional rendering)
      is used to display either the red or green icon based on the conditions created, code on how 
      I learnt to do this can be seen in the official react navigation here: https://reactjs.org/docs/conditional-rendering.html */
-
-
 
      function handleEmail(email) {
         setEmail(email)
