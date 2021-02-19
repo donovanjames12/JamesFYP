@@ -86,7 +86,7 @@ function RoomList({navigation}) {
             <Card.Title>
                 <Text>{item.description}</Text>
             </Card.Title>
-            <Card.Image source={{uri: storage.ref().child(`/rooms/${item.id}`)}} />
+           {/*  <Card.Image source={{uri: storage.ref().child(`/rooms/${item.id}`)}} /> */}
             <Button title="Book" style={styles.button} onPress={() => navigation.navigate("Add Room Booking", {
                 room: item
             })}/>
