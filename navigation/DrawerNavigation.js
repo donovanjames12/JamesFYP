@@ -13,6 +13,7 @@ import RoomList from "../screens/RoomList"
 import ViewRoomBookings from "../screens/ViewRoomBookings"
 import { Entypo } from '@expo/vector-icons';
 import {auth} from "../firebase"
+import AddTableBooking from "../screens/AddTableBooking";
 
 /* Declaring drawer navigator*/
 /*Drawer navigation code https://reactnavigation.org/docs/drawer-based-navigation/ */
@@ -48,6 +49,7 @@ function DrawerNavigation({navigation}) {
           <Drawer.Screen name="Home" component={HomePage} />
           <Drawer.Screen name="View Our Rooms" component={RoomList} />
           <Drawer.Screen name="View Room Bookings" component={ViewRoomBookings} />
+          <Drawer.Screen name="Book A Table" component={AddTableBooking} />
         </Drawer.Navigator>    
       </MenuProvider>  
     )

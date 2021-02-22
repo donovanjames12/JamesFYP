@@ -86,41 +86,28 @@ function RoomList({navigation}) {
             <Card.Title>
                 <Text>{item.description}</Text>
             </Card.Title>
-           {/*  <Card.Image source={{uri: storage.ref().child(`/rooms/${item.id}`)}} /> */}
+            <Card.Image source={{uri: `https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/rooms%2F${item.id}?alt=media&token=9eb07b90-e91e-43ba-9def-966c563b6b82`}} /> 
             <Button title="Book" style={styles.button} onPress={() => navigation.navigate("Add Room Booking", {
                 room: item
             })}/>
         </Card>
     )
     
-    
    // NetNinja explains flatlist implementation here: https://www.youtube.com/watch?v=iMCM1NceGJY */
 
 // handler to instruct floating button actions on what to do when pressed
 // NetNinja video using on click handlers https://www.youtube.com/watch?v=PMX6GP1TXGo
-    const handleClick = (name) => {
-        if(name == "floatingAdd") {
-            navigation.navigate("Add Room")
-        } else if (name == "floatingRefresh") {
-            getRooms()
-        }
+const handleClick = (name) => {
+    if(name == "floatingAdd") {
+        navigation.navigate("Add Room")
+    } else if (name == "floatingRefresh") {
+        getRooms()
     }
-     // data = roomList populated in getRooms function
-    // renderItem is the item to be displayed in the flatlist, i.e. the above card item
-    // the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
-    // styles are simply how you wish to style the item with the below stylesheet
-
-    useEffect(() => {
-        getImageUrl()
-    }, [])
-    const getImageUrl = () => {
-        const ref = storage.ref().child(`/rooms/${item.id}`);
-        ref.put(blob).then(snapshot => {
-          snapshot.ref.getDownloadURL().then(url => {
-            console.log(' * new url', url)
-          })
-        })
-    }
+}
+    // data = roomList populated in getRooms function
+// renderItem is the item to be displayed in the flatlist, i.e. the above card item
+// the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
+// styles are simply how you wish to style the item with the below stylesheet
   
  // flating acion button being called below, link from: https://www.npmjs.com/package/react-native-floating-action
     return (     
