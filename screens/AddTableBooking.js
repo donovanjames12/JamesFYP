@@ -13,6 +13,8 @@ function AddTableBooking({navigation}) {
     const [timeslot, setTimeslot] = useState("") 
     const [isVisible, setIsVisible] = useState(false);
 
+    // bottom sheet code acquired here: https://reactnativeelements.com/docs/bottomsheet/
+    // being used to display table booking time slots
     const list = [
         { 
             title: '17:00 - 18:00',
@@ -35,8 +37,8 @@ function AddTableBooking({navigation}) {
             onPress: () => setTimeslot("21:00 - 22:00")
         },
         {
-          title: 'Cancel',
-          containerStyle: { backgroundColor: 'red' },
+          title: 'Minimize',
+          containerStyle: { backgroundColor: 'blue' },
           titleStyle: { color: 'white' },
           onPress: () => setIsVisible(false),
         },
@@ -62,6 +64,9 @@ function AddTableBooking({navigation}) {
         setDate(date)
     }
 
+    /* Adding inputted data to database from link:
+     https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
+     // parameters passed in navigate function to be called in booking confirmation
     function addBooking() {
         db.collection("tableBookings").add({
             name: name,
@@ -117,20 +122,22 @@ function AddTableBooking({navigation}) {
                     /> 
                 </TouchableOpacity>
 
-                <DateTimePicker
+                <DateTimePicker // date time picker code acquired here: https://github.com/react-native-datetimepicker/datetimepicker
                     value={date}
                     mode={"date"}
                     display="default"
                     style={{width: "100%", marginBottom: 15, marginLeft: 8}}
                     onChange={(event, date) => handleDate(date)}
                 />
-
+                
                 <BottomSheet
                     isVisible={isVisible}
                     containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}
-                >
+                    //all code from ract native elements bottom sheet link above in addition to below mapping
+                    // mapping similar to flatlist, another way of presenting data on the UI
+                >   
                     {list.map((l, i) => (
-                        <ListItem key={i} containerStyle={l.containerStyle} onPress={l.onPress}>
+                        <ListItem key={i} containerStyle={l.containerStyle} onPress={l.onPress}> 
                             <ListItem.Content>
                                 <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
                             </ListItem.Content>

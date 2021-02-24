@@ -39,7 +39,7 @@ function DrawerNavigation({navigation}) {
             headerRight: () => // menu provider being used on right side of drawer hader
               <Menu>
                 <MenuTrigger> 
-                  <Entypo name="dots-three-vertical" size={24} color="black" /> 
+                  <Entypo name="dots-three-vertical" size={24} color="blue" /> 
                 </MenuTrigger> 
                 <MenuOptions>
                   <MenuOption style={{padding: 15}} onSelect={() => signOut()} text='Log Out' /> 

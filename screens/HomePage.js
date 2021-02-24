@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { SafeAreaView, StyleSheet, View, TouchableOpacity } from 'react-native'
+import { SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
 import { Card, Image, Text, Button, Icon } from "react-native-elements"
 import {db, auth} from "../firebase"
 
@@ -12,11 +12,12 @@ function HomePage({navigation}) {
      /* TouchableOpacity adds onPress ability to components,
       code for usage acquired here from NetNinja via youtube: https://www.youtube.com/watch?v=QhX25YGf8qg&list=PL4cUxeGkcC9ixPU-QkScoRBVxtPPzVjrQ&index=8*/
     return (
+        <ScrollView>
         <SafeAreaView style={styles.container}>
             <TouchableOpacity onPress={() => navigation.navigate("View Our Rooms")}>
                 <Card style={styles.card}>
                     <Card.Title>Book Room</Card.Title>
-                    <Card.Image source={{uri: "https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/room.jpg?alt=media&token=2bcd4025-7640-4929-93b3-e30d0b23c874"}}>          
+                    <Card.Image source={{uri: "https://insights.ehotelier.com/wp-content/uploads/sites/6/2020/01/hotel-room-300x300.jpg"}}>          
                     </Card.Image>
                     <Text h5 style={styles.text}>Take a look at our rooms here!</Text>
                 </Card>   
@@ -29,7 +30,16 @@ function HomePage({navigation}) {
                     <Text h5 style={styles.text}>See Room Bookings.</Text>
                 </Card>   
             </TouchableOpacity> 
+            <TouchableOpacity onPress={() => navigation.navigate("Book A Table")}>
+                <Card style={styles.card}>
+                    <Card.Title>Table Booking Here.</Card.Title>
+                    <Card.Image source={{uri: "https://www.coppingerrow.com/wordpress/wp-content/uploads/2019/02/booking-bk.jpg"}}>          
+                    </Card.Image>
+                    <Text h5 style={styles.text}>Book a table here!</Text>
+                </Card>   
+            </TouchableOpacity> 
         </SafeAreaView>
+        </ScrollView>
     ) 
 }
 

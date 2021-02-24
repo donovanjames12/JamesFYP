@@ -8,14 +8,17 @@ import {db} from "../firebase"
  // name, dates and email passed as second parameter in addBooking function
  
 function BookingConfirmation({navigation, route}) {
-    const bookingType = route.params.type
-    const id = route.params.id
+    const bookingType = route.params.type // booking type constant to allow differentiation between room and table
+    const id = route.params.id // room and tabe id will be booking type differentiators
 
+    // code on how to format dates acquired here: https://stackoverflow.com/questions/45547166/how-to-get-dd-mm-yyyy-format-date/45547206
+    // function usedin below cards to display date in desired format
     function formatDate(date) {
         var formattedDate = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() 
         return formattedDate
     }
 
+    // conditional inline rendering similar to registration component used here to idetify booking type
     return (
          <SafeAreaView style={styles.container}>
             {

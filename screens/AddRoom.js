@@ -4,7 +4,7 @@ import { db, storage } from "../firebase.js"
 import { Input, Button, Card } from "react-native-elements"  /* Importing conent from react-native elements library*/
 import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
+
 
 function AddRoom({navigation}) {
     
@@ -21,6 +21,9 @@ function AddRoom({navigation}) {
     const tickIcon = <AntDesign name="check" size={24} color="green" />
     const crossIcon = <Entypo name="cross" size={24} color="red" />
 
+
+    // image picker code aqcuired from the following link: https://docs.expo.io/versions/latest/sdk/imagepicker/
+    // useEffect essentially identifying platform and the requesting permission to library access
     const [image, setImage] = useState(null);
 
     useEffect(() => {
@@ -34,6 +37,7 @@ function AddRoom({navigation}) {
         })();
       }, []);
 
+      //code also from the above link, launches image library
       const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -96,7 +100,7 @@ function AddRoom({navigation}) {
                 roomType: roomType,
                 description: description, 
             }).then(docRef => {
-                uploadImage(docRef.id)
+                uploadImage(docRef.id) // adding image to uploaded room
 
                 setPrice("")     // once added, the room fields are cleared again for future input
                 setRoomType("")
@@ -110,6 +114,8 @@ function AddRoom({navigation}) {
     
     }
 
+    // code acquired from the following: https://medium.com/@wcandillon/uploading-images-to-firebase-with-expo-a913c9f8e98d
+    //blob is a new feature to upload images directly to firebase
     async function uploadImage(id){
         const response = await fetch(image);
         const blob = await response.blob();
