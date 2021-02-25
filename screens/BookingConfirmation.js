@@ -14,7 +14,8 @@ function BookingConfirmation({navigation, route}) {
     // code on how to format dates acquired here: https://stackoverflow.com/questions/45547166/how-to-get-dd-mm-yyyy-format-date/45547206
     // function usedin below cards to display date in desired format
     function formatDate(date) {
-        var formattedDate = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() 
+        let dateObject = new Date(date)
+        var formattedDate = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear() 
         return formattedDate
     }
 

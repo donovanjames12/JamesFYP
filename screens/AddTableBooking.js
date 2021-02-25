@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { BottomSheet, ListItem, Input, Card, Button } from "react-native-elements" //https://reactnativeelements.com/docs/bottomsheet
 import DateTimePicker from '@react-native-community/datetimepicker'
-import {db} from "../firebase"
+import { db } from "../firebase"
 
 
 function AddTableBooking({navigation}) {
@@ -64,33 +64,65 @@ function AddTableBooking({navigation}) {
         setDate(date)
     }
 
+
+
+/*     startMs = 700000
+    endMs = 750000
+
+    db.collection("tableBookings").where("timeslot", "==", "21:00 - 22:00").where("timestamp", ">", startMs).where("timeslot", "<", endMs) */
+
     /* Adding inputted data to database from link:
      https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
      // parameters passed in navigate function to be called in booking confirmation
     function addBooking() {
-        db.collection("tableBookings").add({
-            name: name,
-            groupSize: groupSize,
-            contactNum: contactNum,
-            timeslot: timeslot,
-            date: date
-        }).then(doc => {
-            setName("")
-            setGroupSize("")
-            setContactNum("")
-            setDate(new Date())
-            setTimeslot("")
-            navigation.navigate("Booking Confirmation", {
-                type: "table",
-                name: name,
-                groupSize: groupSize,
-                contactNum: contactNum,
-                timeslot: timeslot,
-                date: date
+        let testDate = date
+
+        testDate.setHours(0,0,0,0)
+        let startTimestamp = testDate.getTime()
+
+        testDate.setHours(23,59,59,0)
+        let endTimestamp = testDate.getTime()
+
+        db.collection("tableBookings")/* .where("date", ">", startTimestamp).where("date", "<", endTimestamp) */.get()
+            .then(docs => {
+                
+                let counter = 0
+                docs.forEach(doc => {
+                    counter += doc.data().groupSize
+                })
+
+                if((100 - counter - groupSize) < 1) {
+                    alert("There are no available tables at this time")
+                } else {
+                    db.collection("tableBookings").add({
+                        name: name,
+                        groupSize: groupSize,
+                        contactNum: contactNum,
+                        timeslot: timeslot,
+                        date: date.getTime()
+                    }).then(doc => {
+                        setName("")
+                        setGroupSize("")
+                        setContactNum("")
+                        setDate(new Date())
+                        setTimeslot("")
+                        navigation.navigate("Booking Confirmation", {
+                            type: "table",
+                            name: name,
+                            groupSize: groupSize,
+                            contactNum: contactNum,
+                            timeslot: timeslot,
+                            date: date.getTime()
+                        })
+                    }).catch(error => {
+                        alert(error.message)
+                    }) 
+                } 
+            }).catch(error => {
+                alert(error.message)
             })
-        }).catch(error => {
-            alert(error.message)
-        })
+
+
     }
 
     return (
