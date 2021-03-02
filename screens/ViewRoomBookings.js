@@ -24,12 +24,32 @@ function ViewRoomBooking({navigation}) {
     /* Displaying room information from roomBookings collection in firebase
      Temp variable being used to retrieve all elements of roomBookings */
     function getRoomBookings() {
+        let rooms = []
+        db.collection("rooms").get().then(docs => {
+            docs.forEach(doc => {
+                let temp = doc.data()
+                temp.id = doc.id
+                rooms.push(temp)
+            })
+        })
+
         db.collection("roomBookings").get()
             .then(docs => {            
                 var tempList = []
                 docs.forEach(doc => {
                     var temp   
+
                     temp = doc.data()
+
+                    rooms.forEach(room => {
+                        if(room.id == temp.roomId) {
+                            temp.roomNo = room.roomNo
+                            temp.roomType = room.roomType
+                            temp.description = room.roomType
+                            temp.price = room.price
+                        }
+                    })
+
                     temp.id = doc.id
                     tempList.push(temp)
                  })
@@ -44,8 +64,7 @@ function ViewRoomBooking({navigation}) {
     // exact same as RoomList, used to fix firestore usage glitch from getRoomBookings.
     // Runs when component is finished rendering. Youtube link on RoomList.
     useEffect(() => {
-        getRoomBookings()
-        
+        getRoomBookings()   
     }, [])
 
      /* delete room function to removed room item from db and UI, code for this function was acquired here:
@@ -71,7 +90,11 @@ function ViewRoomBooking({navigation}) {
             <Text>Contact No: {item.contactNo}</Text>
             <Text>Group Size: {item.groupSize}</Text>
             <Text>Card No: {item.cardNo}</Text>
-            <Text>Room Number: 5</Text>
+            <Card.Divider />
+            <Text>Number: {item.roomNo}</Text>
+            <Text>Description: {item.description}</Text>
+            <Text>Price per night: €{item.price}</Text>
+            <Text>Type: {item.roomType}</Text>
         </Card>
     )
 // handler to instruct floati ng button actions on what to do when pressed
@@ -94,7 +117,7 @@ function ViewRoomBooking({navigation}) {
     
     return (
        <> 
-             <FlatList
+            <FlatList
                 data={roomBookingList}
                 renderItem={Item}
                 keyExtractor={item => item.id}

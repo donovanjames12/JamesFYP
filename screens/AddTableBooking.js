@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { BottomSheet, ListItem, Input, Card, Button } from "react-native-elements" //https://reactnativeelements.com/docs/bottomsheet
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { MaterialIcons, AntDesign, Entypo  } from '@expo/vector-icons';
 import { db } from "../firebase"
 
 
@@ -12,6 +13,17 @@ function AddTableBooking({navigation}) {
     const [date, setDate] = useState(new Date())
     const [timeslot, setTimeslot] = useState("") 
     const [isVisible, setIsVisible] = useState(false);
+
+     // these constants are the same as AddRoom, used for conditional inputs
+     const [isNameValid, setIsNameValid] = useState(false)
+     const [isGroupValid, setIsGroupValid] = useState(false)
+     const [isContactNumValid, setIsContactNumValid] = useState(false)
+    
+
+      // Creating icons to be used for input validation, icon code link here:  https://icons.expo.fyi/
+    const tickIcon = <AntDesign name="check" size={24} color="green" />
+    const crossIcon = <Entypo name="cross" size={24} color="red" />
+    
 
     // bottom sheet code acquired here: https://reactnativeelements.com/docs/bottomsheet/
     // being used to display table booking time slots
@@ -44,16 +56,34 @@ function AddTableBooking({navigation}) {
         },
       ];
 
-    function handleName(name) {
+      function handleName(name) {
         setName(name)
+
+        if(name.length < 1) {
+            setIsNameValid(false)
+        } else {
+            setIsNameValid(true)
+        }
     }
 
-    function handleGroupSize(groupSize) {
+    function handleGroup(groupSize) {
         setGroupSize(groupSize)
+
+        if(groupSize > 99) {
+            setIsGroupValid(false)
+        } else {
+            setIsGroupValid(true)
+        }
     }
 
     function handleContactNum(contactNum) {
         setContactNum(contactNum)
+
+        if(contactNum.length < 9) {
+            setIsContactNumValid(false)
+        } else {
+            setIsContactNumValid(true)
+        }
     }
 
     function handleTimeslot(timeslot) {
@@ -131,19 +161,24 @@ function AddTableBooking({navigation}) {
                 <Input 
                     label="Name:"
                     onChangeText={text => handleName(text)}   // when text is entered, handler requirements checked
+                    rightIcon={isNameValid ? tickIcon : crossIcon} //conditional rendering using above constants and handlers 
                     value={name}       
                 />
 
                 <Input 
                     label="Group Size:"
-                    onChangeText={text => handleGroupSize(text)}   // when text is entered, handler requirements checked
-                    value={groupSize}       
+                    onChangeText={text => handleGroup(text)}   // when text is entered, handler requirements checked
+                    rightIcon={isGroupValid ? tickIcon : crossIcon}
+                    value={groupSize}  
+                    keyboardType="decimal-pad"     
                 />
 
                 <Input 
                     label="Contact Number:"
                     onChangeText={text => handleContactNum(text)}   // when text is entered, handler requirements checked
-                    value={contactNum}       
+                    rightIcon={isContactNumValid ? tickIcon : crossIcon}
+                    value={contactNum} 
+                    keyboardType="decimal-pad"      
                 />
                     
                 <TouchableOpacity onPress={() => setIsVisible(true)}>

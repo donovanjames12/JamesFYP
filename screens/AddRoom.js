@@ -12,15 +12,16 @@ function AddRoom({navigation}) {
     const [price, setPrice] = useState("") // initial useState Values in brackets
     const [roomType, setRoomType] = useState("") // they are null here as I am taking inputted data
     const [description, setDescription] = useState("")
+    const [roomNo, setRoomNo] = useState("")
 
     const [isRoomTypeValid, setIsRoomTypeValid] = useState(false) // they are false here as I am using boolean and conditional rendering
     const [isPriceValid, setIsPriceValid] = useState(false)
+    const [isRoomNoValid, setIsRoomNoValid] = useState(false)
     const [isDescriptionValid, setIsDescriptionValid] = useState(false)
     
     // Creating icons to be used for input validation, icon code link here:  https://icons.expo.fyi/
     const tickIcon = <AntDesign name="check" size={24} color="green" />
     const crossIcon = <Entypo name="cross" size={24} color="red" />
-
 
     // image picker code aqcuired from the following link: https://docs.expo.io/versions/latest/sdk/imagepicker/
     // useEffect essentially identifying platform and the requesting permission to library access
@@ -80,6 +81,15 @@ function AddRoom({navigation}) {
         }
     }
 
+    function handleRoomNo(roomNo) {
+        setRoomNo(roomNo)
+        if(roomNo.length < 1) {
+            setIsRoomNoValid(false)
+        } else {
+            setIsRoomNoValid(true)
+        }
+    }
+
     function handleDescriptionType(description) {
         setDescription(description)
         if(description.length < 5) {
@@ -98,13 +108,15 @@ function AddRoom({navigation}) {
             db.collection("rooms").add({
                 price: price,     // once conditions met, data is added to rooms collection
                 roomType: roomType,
-                description: description, 
+                description: description,
+                roomNo: roomNo, 
             }).then(docRef => {
                 uploadImage(docRef.id) // adding image to uploaded room
 
                 setPrice("")     // once added, the room fields are cleared again for future input
                 setRoomType("")
                 setDescription("")
+                setRoomNo("")
                 navigation.goBack()  // function called when below button is clicked and returns user to previous page 
              /* error message if room addition unsuccessful*/ 
             }).catch(error => {
@@ -150,12 +162,22 @@ function AddRoom({navigation}) {
             />
 
             <Input 
+                label="Room Number"
+                style={styles.textInput} 
+                onChangeText={text => handleRoomNo(text)} 
+                rightIcon={isRoomNoValid ? tickIcon : crossIcon}
+                value={roomNo}
+                keyboardType="number-pad"
+            />
+
+            <Input 
                 label="Description"
                 style={styles.textInput} 
                 onChangeText={text => handleDescriptionType(text)} 
                 value={description}
                 rightIcon={isDescriptionValid ? tickIcon : crossIcon}
             />
+
 
         <Button title="Pick an image from camera roll" onPress={pickImage} />
         {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}

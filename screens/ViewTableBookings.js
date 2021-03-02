@@ -26,12 +26,12 @@ function ViewTableBookings({navigation}) {
         let testDate = date
 
         testDate.setHours(0,0,0,0)
-        setStartTimestamp(testDate.getTime())
+        setStartTimestamp(testDate.getTime())   
 
         testDate.setHours(23,59,59,0)
         setEndTimestamp(testDate.getTime()) 
 
-        getTableBookings()
+        getTableBookings()  
     }, [date])
 
     function deleteBooking(id) {
@@ -42,11 +42,10 @@ function ViewTableBookings({navigation}) {
     }
     
     function getTableBookings() {
-        db.collection("tableBookings")/* .where("date", ">", startTimestamp).where("date", "<", endTimestamp) */.get()
+        db.collection("tableBookings").where("date", ">", startTimestamp).where("date", "<", endTimestamp).get()
         .then(docs => {
             let tempList = []
             docs.forEach(doc => {
-            
                 let temp = doc.data()
                 temp.id = doc.id
                 tempList.push(temp)
@@ -57,8 +56,8 @@ function ViewTableBookings({navigation}) {
             console.log(error.message)
         })
     }
-    /* Item created which will be used to present in Flatlist. JSX in blue is useState variables created in 
-    AddRoomBookings.  */
+
+    /* Item created which will be used to present in Flatlist.  */
     const Item = ({ item }) => (
         <Card style={styles.card}>
             <Card.Title onPress={() => deleteBooking(item.id)}>{item.name} [X]</Card.Title>

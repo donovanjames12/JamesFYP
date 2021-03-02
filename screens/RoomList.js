@@ -81,6 +81,9 @@ function RoomList({navigation}) {
             </Card.Title>
             <Card.Divider/>
             <Card.Title>  
+                <Text>Room Number: {item.roomNo}</Text>
+            </Card.Title>
+            <Card.Title>  
                 <Text>€{item.price} per night</Text>
             </Card.Title>
             <Card.Title>

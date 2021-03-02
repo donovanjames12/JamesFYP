@@ -166,6 +166,7 @@ function AddRoomBooking({route, navigation}) {
 
             /*carrying some data forward to booking confirmation, this is via navigation routes*/
             navigation.navigate("Booking Confirmation", {
+                type: "room",
                 name: name,   // once below button clicked and successful, navigated to booking confirmation
                 email: email, // name, emails and dates are also routed to booking confirmation as the second parmeter
                 fromDate: fromDate,
