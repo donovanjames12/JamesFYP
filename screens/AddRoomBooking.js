@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, ScrollView } from "react-native"
 import {Card, Button, Input, Icon} from "react-native-elements"
 import { MaterialIcons, AntDesign, Entypo  } from '@expo/vector-icons';
 import {db, auth} from "../firebase"
+import DatePicker from "components/DatePicker"
 
  /* AddRoomBooking destructured, route allows for transmission of data in react navigation,
  see this link for further information: https://reactnavigation.org/docs/route-prop/ 
@@ -21,8 +22,6 @@ function AddRoomBooking({route, navigation}) {
     const [isContactNoValid, setIsContactNoValid] = useState(false)
     const [isGroupValid, setIsGroupValid] = useState(false)
     const [isCardNoValid, setIsCardNoValid] = useState(false)
-    const [isFromDateValid, setIsFromDateValid] = useState(false)
-    const [isToDateValid, setIsToDateValid] = useState(false)
 
      /* The below constant is email regex, regex can be used as test validation for inputs such
     as emails, currencies etc. different variations are used and created by people online,
@@ -44,8 +43,8 @@ function AddRoomBooking({route, navigation}) {
     const [contactNo, setContactNo] = useState("")
     const [groupSize, setGroupSize] = useState("")
     const [cardNo, setCardNo] = useState("")
-    const [fromDate, setFromDate] = useState("")
-    const [toDate, setToDate] = useState("")
+    const [fromDate, setFromDate] = useState(new Date())
+    const [toDate, setToDate] = useState(new Date())
 
         /* conditional rendering is used in the inputs, the constants created above are green and red ticks which will be displayed in the event of
      correct or incorrect information being inputted to notify the user, the condiions of the handlers
@@ -116,34 +115,12 @@ function AddRoomBooking({route, navigation}) {
         }
     }
 
-    function handleToDate(toDate) {
-        setToDate(toDate)
-
-        if(toDate.length < 8) {
-            setIsToDateValid(false)
-        } else {
-            setIsToDateValid(true)
-        }
-    }
-
-    function handleFromDate(fromDate) {
-        setFromDate(fromDate)
-
-        if(fromDate.length < 8) {
-            setIsFromDateValid(false)
-        } else {
-            setIsFromDateValid(true)
-        }
-    }
-    
-
     /* Adding inputted data to database from link:
      https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
 
       // Room cannot be added unless the conditions of all input handlers are met
     function addBooking() {
-        if(isNameValid && isEmailValid && isAddressValid && isContactNoValid && isGroupValid
-             && isCardNoValid && isFromDateValid && toDate ) 
+        if(isNameValid && isEmailValid && isAddressValid && isContactNoValid && isGroupValid && toDate ) 
         db.collection("roomBookings").doc().set({
             name: name,  // once conditions are met, data added to roomBookings collection
             email: email,
@@ -161,8 +138,8 @@ function AddRoomBooking({route, navigation}) {
             setContactNo("")
             setGroupSize("")
             setCardNo("")
-            setFromDate("")
-            setToDate("")
+            setFromDate(new Date())
+            setToDate(new Date())
 
             /*carrying some data forward to booking confirmation, this is via navigation routes*/
             navigation.navigate("Booking Confirmation", {
@@ -249,23 +226,17 @@ function AddRoomBooking({route, navigation}) {
                     keyboardType="decimal-pad" 
                 />
 
-                <Input 
-                    label="From (dd/mm/yy)"
-                    style={styles.textInput}  
-                    rightIcon={isFromDateValid ? tickIcon : crossIcon}  
-                    onChangeText={text => handleFromDate(text)}  
-                    value={fromDate}       
-                />
+                <View style={{display: "flex", flexDirection: "row"}}>
+                    <Text style={{flexGrow: 1, textAlign: "center"}}>From</Text>
+                    <Text style={{flexGrow: 1, textAlign: "center"}}>To</Text>
+                </View>
 
-                <Input 
-                    label="To (dd/mm/yy)"
-                    style={styles.textInput}   
-                    rightIcon={isToDateValid ? tickIcon : crossIcon}  
-                    onChangeText={text => handleToDate(text)}  
-                    value={toDate}  
-                />
+                <View style={{display: "flex", flexDirection: "row", marginBottom: 15}}>
+                    <DatePicker date={fromDate} setDate={setFromDate} style={{flexGrow: 1}}/>                 
+                    <DatePicker date={toDate} setDate={setToDate} style={{flexGrow: 1}}/>
+                </View>
 
-                    
+                <Text style={{fontSize: 30, textAlign: "center", marginBottom: 15}}>Total €180</Text>
 
                 <Button title="Confirm Booking" onPress={addBooking}/> 
             </Card>

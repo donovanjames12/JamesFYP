@@ -5,7 +5,6 @@ import { Input, Button, Card } from "react-native-elements"  /* Importing conent
 import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
-
 function AddRoom({navigation}) {
     
     //NetNinja explaning useState via Youtube:  https://www.youtube.com/watch?v=1FiIYaRr148 

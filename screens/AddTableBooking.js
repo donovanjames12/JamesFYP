@@ -4,7 +4,8 @@ import { BottomSheet, ListItem, Input, Card, Button } from "react-native-element
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { MaterialIcons, AntDesign, Entypo  } from '@expo/vector-icons';
 import { db } from "../firebase"
-
+import DatePicker from "components/DatePicker"
+import firebase from 'firebase'
 
 function AddTableBooking({navigation}) {
     const [name, setName] = useState("")
@@ -12,15 +13,14 @@ function AddTableBooking({navigation}) {
     const [contactNum, setContactNum] = useState("")
     const [date, setDate] = useState(new Date())
     const [timeslot, setTimeslot] = useState("") 
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(false)
 
-     // these constants are the same as AddRoom, used for conditional inputs
-     const [isNameValid, setIsNameValid] = useState(false)
-     const [isGroupValid, setIsGroupValid] = useState(false)
-     const [isContactNumValid, setIsContactNumValid] = useState(false)
+    // these constants are the same as AddRoom, used for conditional inputs
+    const [isNameValid, setIsNameValid] = useState(false)
+    const [isGroupValid, setIsGroupValid] = useState(false)
+    const [isContactNumValid, setIsContactNumValid] = useState(false)
     
-
-      // Creating icons to be used for input validation, icon code link here:  https://icons.expo.fyi/
+    // Creating icons to be used for input validation, icon code link here:  https://icons.expo.fyi/
     const tickIcon = <AntDesign name="check" size={24} color="green" />
     const crossIcon = <Entypo name="cross" size={24} color="red" />
     
@@ -105,15 +105,7 @@ function AddTableBooking({navigation}) {
      https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
      // parameters passed in navigate function to be called in booking confirmation
     function addBooking() {
-        let testDate = date
-
-        testDate.setHours(0,0,0,0)
-        let startTimestamp = testDate.getTime()
-
-        testDate.setHours(23,59,59,0)
-        let endTimestamp = testDate.getTime()
-
-        db.collection("tableBookings")/* .where("date", ">", startTimestamp).where("date", "<", endTimestamp) */.get()
+        db.collection("tableBookings").get()
             .then(docs => {
                 
                 let counter = 0
@@ -129,7 +121,7 @@ function AddTableBooking({navigation}) {
                         groupSize: groupSize,
                         contactNum: contactNum,
                         timeslot: timeslot,
-                        date: date.getTime()
+                        date: date
                     }).then(doc => {
                         setName("")
                         setGroupSize("")
@@ -142,7 +134,7 @@ function AddTableBooking({navigation}) {
                             groupSize: groupSize,
                             contactNum: contactNum,
                             timeslot: timeslot,
-                            date: date.getTime()
+                            date: date
                         })
                     }).catch(error => {
                         alert(error.message)
@@ -189,14 +181,8 @@ function AddTableBooking({navigation}) {
                     /> 
                 </TouchableOpacity>
 
-                <DateTimePicker // date time picker code acquired here: https://github.com/react-native-datetimepicker/datetimepicker
-                    value={date}
-                    mode={"date"}
-                    display="default"
-                    style={{width: "100%", marginBottom: 15, marginLeft: 8}}
-                    onChange={(event, date) => handleDate(date)}
-                />
-                
+                <DatePicker date={date} setDate={setDate} />
+
                 <BottomSheet
                     isVisible={isVisible}
                     containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}

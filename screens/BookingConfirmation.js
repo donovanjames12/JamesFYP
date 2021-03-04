@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { StyleSheet, View, Text, SafeAreaView } from "react-native"
 import {Card, Button} from "react-native-elements"
 import {db} from "../firebase"
-
+import { formatDate } from "../helpers"
  
  //https://reactnavigation.org/docs/route-prop/
  // name, dates and email passed as second parameter in addBooking function
@@ -13,11 +13,6 @@ function BookingConfirmation({navigation, route}) {
 
     // code on how to format dates acquired here: https://stackoverflow.com/questions/45547166/how-to-get-dd-mm-yyyy-format-date/45547206
     // function usedin below cards to display date in desired format
-    function formatDate(date) {
-        let dateObject = new Date(date)
-        var formattedDate = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear() 
-        return formattedDate
-    }
 
     // conditional inline rendering similar to registration component used here to idetify booking type
     return (

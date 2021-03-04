@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
-import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, View} from 'react-native'
+import React from 'react'
+import { LogBox } from 'react-native'
 import { ThemeProvider, Button, } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigation from "./navigation/StackNavigation"
@@ -23,11 +23,14 @@ the navigation container is essentially storing my whole project as the stack na
 contains all screens (drawer navigation also part of the stack) Information on 
 the navigation container can be seen here at he official ract documenatation: https://reactnative.dev/docs/navigation */
 export default function App() {
+  LogBox.ignoreLogs(['Setting a timer'])
+
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>       
         <StackNavigation />
       </NavigationContainer>
+      <StatusBar style="light" translucent={false}/>
     </ThemeProvider>
   )
 }
