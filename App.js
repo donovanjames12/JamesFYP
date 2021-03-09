@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { LogBox } from 'react-native'
 import { ThemeProvider, Button, } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigation from "./navigation/StackNavigation"
-
+import { auth, db } from "./firebase"
 
 /* Creating a theme which can be usedd application-wide link at https://reactnativeelements.com/docs/customization/  */
 const theme = {
@@ -12,8 +12,6 @@ const theme = {
     
   },
 }
-
-
 
 /* The drawer inputs placed wihin a themeprovidor 
 which ensures it is used across all components mentioned within return statement*/
@@ -25,10 +23,45 @@ the navigation container can be seen here at he official ract documenatation: ht
 export default function App() {
   LogBox.ignoreLogs(['Setting a timer'])
 
+  const themes = {
+    light: {
+      foreground: "#000000",
+      background: "#eeeeee"
+    },
+    dark: {
+      foreground: "#ffffff",
+      background: "#222222"
+    }
+  };
+  
+  const [userType, setUserType] = useState(null)
+
+  useEffect(() => {
+    const authListener = auth.onAuthStateChanged(user => {
+      if(user) {
+        db.collection("users").doc(user.uid).get()
+          .then(doc => {
+            if(doc.data().admin === true) {
+              setUserType("admin")
+              auth.currentUser.type = "admin"
+            } else {
+              setUserType("user")
+              auth.currentUser.type = "user"
+            }
+          })
+      } else {
+        auth.currentUser.type=null
+        setUserType(null)
+      }
+    })
+
+    return authListener // Deletes auth lister when app closes. 
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>       
-        <StackNavigation />
+        <StackNavigation userType={userType} />
       </NavigationContainer>
       <StatusBar style="light" translucent={false}/>
     </ThemeProvider>

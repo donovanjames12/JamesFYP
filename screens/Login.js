@@ -18,11 +18,9 @@ function Login ({navigation}) {
      function login() {
         auth.signInWithEmailAndPassword(email, password)
             .then(() => {
-                navigation.navigate('Main')
+                
             }).catch(error => {
                 alert(error.message)
-                console.log(error.message)
-     
             })
     }
 

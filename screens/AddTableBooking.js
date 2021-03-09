@@ -181,7 +181,8 @@ function AddTableBooking({navigation}) {
                     /> 
                 </TouchableOpacity>
 
-                <DatePicker date={date} setDate={setDate} />
+                
+                <DatePicker date={date} setDate={setDate} style={{ marginLeft: 125, marginBottom: 20}}/>
 
                 <BottomSheet
                     isVisible={isVisible}

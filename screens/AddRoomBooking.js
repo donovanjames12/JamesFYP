@@ -231,9 +231,9 @@ function AddRoomBooking({route, navigation}) {
                     <Text style={{flexGrow: 1, textAlign: "center"}}>To</Text>
                 </View>
 
-                <View style={{display: "flex", flexDirection: "row", marginBottom: 15}}>
-                    <DatePicker date={fromDate} setDate={setFromDate} style={{flexGrow: 1}}/>                 
-                    <DatePicker date={toDate} setDate={setToDate} style={{flexGrow: 1}}/>
+                <View style={{display: "flex", flexDirection: "row", marginTop: 10, marginBottom: 15}}>
+                    <DatePicker date={fromDate} setDate={setFromDate} style={{flexGrow: 1, marginLeft: 40}}/>                 
+                    <DatePicker date={toDate} setDate={setToDate} style={{flexGrow: 1, marginLeft: 20}}/>
                 </View>
 
                 <Text style={{fontSize: 30, textAlign: "center", marginBottom: 15}}>Total €180</Text>

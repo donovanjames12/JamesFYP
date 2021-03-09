@@ -78,7 +78,8 @@ function Registration ({navigation}) {
             .then(result => {
                 alert("Account created, you may now login")
                 db.collection("users").doc(result.user.uid).set({
-                    name: name
+                    name: name,
+                    admin: false
                 }).catch(error => {
                     console.log(error.message)
                 })

@@ -114,9 +114,9 @@ function ViewTableBookings({navigation}) {
    
     return (
        <>   
-            <View style={{display: "flex", flexWrap: "nowrap", flexDirection: "row"}}>
-                <DatePicker date={start} setDate={setStart} style={{flexGrow: 1}}/>
-                <DatePicker date={end} setDate={setEnd} style={{flexGrow: 1}}/>
+            <View style={{display: "flex", flexDirection: "row", marginTop: 10, marginBottom: 15}}>
+                <DatePicker date={start} setDate={setStart} style={{flexGrow: 1, marginLeft: 40}}/>                 
+                <DatePicker date={end} setDate={setEnd} style={{flexGrow: 1, marginLeft: 20}}/>
             </View>
 
             <FlatList
