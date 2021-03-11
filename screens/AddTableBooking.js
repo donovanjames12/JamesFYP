@@ -30,23 +30,38 @@ function AddTableBooking({navigation}) {
     const list = [
         { 
             title: '17:00 - 18:00',
-            onPress: () => setTimeslot("17:00 - 18:00")
+            onPress: () => {
+                setTimeslot("17:00 - 18:00")
+                setIsVisible(false)
+            }
         },
         { 
             title: '18:00 - 19:00',
-            onPress: () => setTimeslot("18:00 - 19:00")
+            onPress: () => {
+                setTimeslot("18:00 - 19:00")
+                setIsVisible(false)
+            }
         },
         { 
             title: '19:00 - 20:00',
-            onPress: () => setTimeslot("19:00 - 20:00")
+            onPress: () => {
+                setTimeslot("19:00 - 20:00")
+                setIsVisible(false)
+            }
         },
         { 
             title: '20:00 - 21:00',
-            onPress: () => setTimeslot("19:00 - 20:00")
+            onPress: () => {
+                setTimeslot("19:00 - 20:00")
+                setIsVisible(false)
+            } 
         },
         { 
             title: '21:00 - 22:00',
-            onPress: () => setTimeslot("21:00 - 22:00")
+            onPress: () => {
+                setTimeslot("21:00 - 22:00")
+                setIsVisible(false)
+            }
         },
         {
           title: 'Minimize',

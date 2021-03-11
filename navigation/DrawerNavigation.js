@@ -12,9 +12,10 @@ import HomePage from "../screens/HomePage"
 import RoomList from "../screens/RoomList"
 import ViewRoomBookings from "../screens/ViewRoomBookings"
 import { Entypo } from '@expo/vector-icons';
-import {auth} from "../firebase"
+import { auth } from "../firebase"
 import AddTableBooking from "../screens/AddTableBooking";
 import ViewTableBookings from "../screens/ViewTableBookings"
+import { useAuth } from "components/AuthContext"
 
 /* Declaring drawer navigator*/
 /*Drawer navigation code https://reactnavigation.org/docs/drawer-based-navigation/ */
@@ -22,12 +23,9 @@ import ViewTableBookings from "../screens/ViewTableBookings"
 const Drawer = createDrawerNavigator();
 
 /* signout code got from https://rnfirebase.io/auth/usage */
-function DrawerNavigation({navigation}) {
-    
-  function signOut() {
-      auth.signOut()                // user signed out of firebase authentication
-  }
-   
+function DrawerNavigation() {  
+  const { userType } = useAuth()
+
   /* menu providor code here https://www.npmjs.com/package/react-native-popup-menu */ 
    
    // Menu provider button added to right side of drawer header, signout function called when button is selected
@@ -42,15 +40,21 @@ function DrawerNavigation({navigation}) {
                   <Entypo name="dots-three-vertical" size={24} color="blue" /> 
                 </MenuTrigger> 
                 <MenuOptions>
-                  <MenuOption style={{padding: 15}} onSelect={() => signOut()} text='Log Out' /> 
+                  <MenuOption style={{padding: 15}} onSelect={() => auth.signOut().catch(error => alert(error.message))} text='Log Out' /> 
                 </MenuOptions> 
               </Menu>
           }}>
           <Drawer.Screen name="Home" component={HomePage} />
           <Drawer.Screen name="View Our Rooms" component={RoomList} />
-          <Drawer.Screen name="View Room Bookings" component={ViewRoomBookings} />
           <Drawer.Screen name="Book A Table" component={AddTableBooking} />
-          <Drawer.Screen name="View Table Bookings" component={ViewTableBookings} />
+          { 
+            userType == "admin" &&
+            <>          
+              <Drawer.Screen name="View Room Bookings" component={ViewRoomBookings} />
+              <Drawer.Screen name="View Table Bookings" component={ViewTableBookings} />
+            </>
+          }
+
         </Drawer.Navigator>    
       </MenuProvider>  
     )

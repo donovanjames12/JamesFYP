@@ -4,28 +4,45 @@ import { db, storage } from "../firebase"  /* Linking firebase to component */
 import {Card, Button, PricingCard } from "react-native-elements" /* adding react native elements library */
 import { AntDesign } from '@expo/vector-icons';
 import { FloatingAction } from "react-native-floating-action";
+import { useAuth } from "components/AuthContext"
 
 /* Room List added to navigation slider*/
 function RoomList({navigation}) {
      /*Creating a constant to store room list inputs, cannot be changed with useState */
     const [roomList, setRoomList] = useState("")
+    const { userType } = useAuth()
     
     // code is for the floating button, code obtained here: https://www.npmjs.com/package/react-native-floating-action
     // once floating button is clicked, this is what appears
-    const actions = [
-        {
-          text: "Refresh",
-          icon: <AntDesign name="retweet" size={24} color="white" />,
-          name: "floatingRefresh",
-          position: 1
-        },
-        {
-          text: "Add Room",
-          icon: <AntDesign name="addfile" size={24} color="white" />,
-          name: "floatingAdd",
-          position: 2
-        },
-      ];
+
+    let actions = []
+
+    if(userType == "admin") {
+        actions = [
+            {
+                text: "Refresh",
+                icon: <AntDesign name="retweet" size={24} color="white" />,
+                name: "floatingRefresh",
+                position: 1
+            }, 
+            {
+                text: "Add Room",
+                icon: <AntDesign name="addfile" size={24} color="white" />,
+                name: "floatingAdd",
+                position: 2
+            }
+        ]
+    } else {
+        actions = [
+            {
+                text: "Refresh",
+                icon: <AntDesign name="retweet" size={24} color="white" />,
+                name: "floatingRefresh",
+                position: 1
+            }, 
+        ]
+    }
+
      /* 
         Function to retrieve rooms data from firestore 
        */
@@ -76,9 +93,18 @@ function RoomList({navigation}) {
    
     const item = ({ item }) => (
         <Card>
-            <Card.Title onPress={() => deleteRoom(item.id)}>
-                <Text>{item.roomType} [X]</Text>
-            </Card.Title>
+            { 
+                userType == "admin" 
+                ? 
+                <Card.Title onPress={() => deleteRoom(item.id)}>
+                    <Text>{item.roomType} [X]</Text>
+                </Card.Title>
+                :
+                <Card.Title>
+                    <Text>{item.roomType}</Text>
+                </Card.Title>
+            }
+            
             <Card.Divider/>
             <Card.Title>  
                 <Text>Room Number: {item.roomNo}</Text>
@@ -126,6 +152,7 @@ const handleClick = (name) => {
                 actions={actions}
                 onPressItem={name => handleClick(name) }
             />
+
         </>
      
     )

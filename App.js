@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState, useContext } from 'react'
 import { LogBox } from 'react-native'
-import { ThemeProvider, Button, } from 'react-native-elements'
+import { ThemeProvider, Button, Text} from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigation from "./navigation/StackNavigation"
 import { auth, db } from "./firebase"
+import { AuthProvider } from "components/AuthContext"
 
 /* Creating a theme which can be usedd application-wide link at https://reactnativeelements.com/docs/customization/  */
 const theme = {
@@ -33,37 +34,15 @@ export default function App() {
       background: "#222222"
     }
   };
-  
-  const [userType, setUserType] = useState(null)
-
-  useEffect(() => {
-    const authListener = auth.onAuthStateChanged(user => {
-      if(user) {
-        db.collection("users").doc(user.uid).get()
-          .then(doc => {
-            if(doc.data().admin === true) {
-              setUserType("admin")
-              auth.currentUser.type = "admin"
-            } else {
-              setUserType("user")
-              auth.currentUser.type = "user"
-            }
-          })
-      } else {
-        auth.currentUser.type=null
-        setUserType(null)
-      }
-    })
-
-    return authListener // Deletes auth lister when app closes. 
-  }, [])
 
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>       
-        <StackNavigation userType={userType} />
-      </NavigationContainer>
-      <StatusBar style="light" translucent={false}/>
+      <AuthProvider>
+       <NavigationContainer>       
+          <StackNavigation />
+        </NavigationContainer>
+        <StatusBar style="light" translucent={false}/> 
+      </AuthProvider>
     </ThemeProvider>
   )
 }

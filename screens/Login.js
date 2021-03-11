@@ -9,8 +9,9 @@ function Login ({navigation}) {
     const image = {uri: "https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/The-Vee-pass.jpg?alt=media&token=4a725138-b7ff-41fe-819a-0255a4a68baf"}
     
     /* youtube link explaining useState from NetNinja https://www.youtube.com/watch?v=1FiIYaRr148  */
-    const [email, setEmail] = useState("test8@test.com")
-    const [password, setPassword] = useState("password")
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
    
      /* login function code acquired at firebase documentation here: https://firebase.google.com/docs/auth/web/password-auth */
     /* navigation.navigate function used to move between screens with react navigation see: https://reactnavigation.org/docs/navigating/ */
@@ -24,16 +25,12 @@ function Login ({navigation}) {
             })
     }
 
-    return (
-        
+    return (    
         /* using useState with Inputs explained on YouTube by NetNinja https://www.youtube.com/watch?v=c9Sg9jDitm8 */
         /* code for input icons i.e. login + password icons in inputs here: https://icons.expo.fyi/ */
        
-      
        <ImageBackground source={image} style={styles.background}>
-
-     
-        <View style={styles.view}>
+            <View style={styles.view}>
                 <Card style={styles.card}>
     
                     <Input 
@@ -58,7 +55,7 @@ function Login ({navigation}) {
 
                     <Button style={styles.text} title="Login" onPress={() => login()}/>
                 </Card>  
-        </View>
+            </View>
         </ImageBackground>
        
 /* the various props inputs in react native elements can take https://reactnativeelements.com/docs/input/ */
