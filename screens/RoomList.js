@@ -5,6 +5,8 @@ import {Card, Button, PricingCard } from "react-native-elements" /* adding react
 import { AntDesign } from '@expo/vector-icons';
 import { FloatingAction } from "react-native-floating-action";
 import { useAuth } from "components/AuthContext"
+import { FontAwesome } from '@expo/vector-icons'; 
+
 
 /* Room List added to navigation slider*/
 function RoomList({navigation}) {
@@ -96,15 +98,26 @@ function RoomList({navigation}) {
             { 
                 userType == "admin" 
                 ? 
-                <Card.Title onPress={() => deleteRoom(item.id)}>
-                    <Text>{item.roomType} [X]</Text>
-                </Card.Title>
+                <View style={styles.row}>
+                    <View style={{display: "flex", flexDirection: "column", flexGrow: 1}}>
+                        <Text>{item.roomType}</Text>
+                    </View>
+                    <View style={styles.column}>
+                        <FontAwesome 
+                            name="trash-o" 
+                            size={24} 
+                            color="black" 
+                            style={{marginLeft: "auto"}} 
+                            onPress={() => deleteBooking(item.id)} />
+                    </View>
+                </View>
                 :
                 <Card.Title>
                     <Text>{item.roomType}</Text>
                 </Card.Title>
             }
-            
+             
+
             <Card.Divider/>
             <Card.Title>  
                 <Text>Room Number: {item.roomNo}</Text>
@@ -171,6 +184,17 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 20
+    },
+    row: {
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        paddingBottom: 8
+    },
+    column: {
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: 1
     }
 })
 export default RoomList
