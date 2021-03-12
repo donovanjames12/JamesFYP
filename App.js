@@ -34,10 +34,11 @@ export default function App() {
       background: "#222222"
     }
   };
-
+ 
+  // application wrapped in authprovider
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
+      <AuthProvider> 
        <NavigationContainer>       
           <StackNavigation />
         </NavigationContainer>

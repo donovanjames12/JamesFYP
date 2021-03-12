@@ -111,10 +111,7 @@ function AddTableBooking({navigation}) {
 
 
 
-/*     startMs = 700000
-    endMs = 750000
 
-    db.collection("tableBookings").where("timeslot", "==", "21:00 - 22:00").where("timestamp", ">", startMs).where("timeslot", "<", endMs) */
 
     /* Adding inputted data to database from link:
      https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
@@ -123,11 +120,12 @@ function AddTableBooking({navigation}) {
         db.collection("tableBookings").get()
             .then(docs => {
                 
+                // creating a counter and setting it equal to groupsize field 
                 let counter = 0
                 docs.forEach(doc => {
                     counter += doc.data().groupSize
                 })
-
+                // if the group size entered is greater than the available capacity, notification message appears
                 if((100 - counter - groupSize) < 1) {
                     alert("There are no available tables at this time")
                 } else {
@@ -144,7 +142,7 @@ function AddTableBooking({navigation}) {
                         setDate(new Date())
                         setTimeslot("")
                         navigation.navigate("Booking Confirmation", {
-                            type: "table",
+                            type: "table", // type here is used in booking confirmation, differentiate between room
                             name: name,
                             groupSize: groupSize,
                             contactNum: contactNum,

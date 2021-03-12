@@ -8,12 +8,13 @@ import DatePicker from "components/DatePicker"
 import {formatDate} from "../helpers"
 import { FontAwesome } from '@expo/vector-icons'; 
 
- /* This form is the exact same layout as RoomList */
+ /* declaring use state variables*/
 function ViewTableBookings({navigation}) {
     const [tableBookingList, setTableBookingList] = useState([])
     const [start, setStart] = useState(setStartDate)
     const [end, setEnd] = useState(setEndDate) 
 
+    // same as floating button in view room bookings
      const actions = [
         {
             text: "Refresh",
@@ -23,29 +24,35 @@ function ViewTableBookings({navigation}) {
         },
     ]; 
 
+     // function to set date picker start date at midnight
     function setStartDate() {
         let x = new Date()
         x.setHours(0,0,0,0)
         return x
     }
-
+ 
+    // end date et to 23:59
     function setEndDate() {
         let x = new Date()
         x.setHours(23, 59, 59, 999)
         return x
     }
 
+    // exact same as RoomList, used to fix firestore usage glitch from getRoomBookings.
+    // Runs when component is finished rendering. Youtube link on RoomList.
     useEffect(() => {     
         getTableBookings()
     }, [start, end])
 
+    /* delete room function to removed room item from db and UI, code for this function was acquired here:
+    https://firebase.google.com/docs/firestore/manage-data/delete-data*/
     function deleteBooking(id) {
         db.collection("tableBookings").doc(id).delete()
             .then(() => {
                 getTableBookings()
             })
     }
-    
+    // example of querying firestore data https://stackoverflow.com/questions/47876754/query-firestore-database-for-document-id
     function getTableBookings() {
         db.collection("tableBookings").where("date", ">", start).where("date", "<", end).get()
             .then(docs => {
@@ -55,7 +62,7 @@ function ViewTableBookings({navigation}) {
                     temp.id = doc.id
                     tempList.push(temp)
                 })
-           
+           // database queried to display data between entered dates and retrieve bookings from this range
                 setTableBookingList(tempList)
         }).catch(error => {
             alert(error.message)

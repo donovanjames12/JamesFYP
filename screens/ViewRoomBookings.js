@@ -8,19 +8,20 @@ import { formatDate } from "../helpers"
 import DatePicker from "components/DatePicker"
 import { FontAwesome } from '@expo/vector-icons'; 
 
- /* This form is the exact same layout as RoomList */
+ /* declaring use state variables*/
 function ViewRoomBooking({navigation}) {
     const [roomBookingList, setRoomBookingList] = useState([])
     const [rooms, setRooms] = useState([])
     const [start, setStart] = useState(setStartDate)
     const [end, setEnd] = useState(setEndDate) 
 
+    // function to set date picker start date at midnight
     function setStartDate() {
         let x = new Date()
         x.setHours(0,0,0,0)
         return x
     }
-
+// end date et to 23:59
     function setEndDate() {
         let x = new Date()
         x.setHours(23, 59, 59, 999)
@@ -49,13 +50,13 @@ function ViewRoomBooking({navigation}) {
                 rooms.push(temp)
             })
         })
-
+ // example of querying firestore data https://stackoverflow.com/questions/47876754/query-firestore-database-for-document-id
         db.collection("roomBookings").where("fromDate", ">", start).where("fromDate", "<", end).get()
             .then(docs => {            
                 var tempList = []
                 docs.forEach(doc => {
                     var temp   
-
+// database queried to display data between entered dates and retrieve bookings from this range
                     temp = doc.data()
 
                     rooms.forEach(room => {

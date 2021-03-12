@@ -24,7 +24,7 @@ function HomePage({navigation}) {
                 </Card>   
             </TouchableOpacity> 
             { 
-                userType == "admin" &&
+                userType == "admin" && // conditional rendering to display correct menu items to each user
                 <TouchableOpacity onPress={() => navigation.navigate("View Room Bookings")}>
                     <Card style={styles.card}>
                         <Card.Title>Current Room Bookings.</Card.Title>

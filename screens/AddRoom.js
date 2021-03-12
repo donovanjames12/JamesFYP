@@ -179,11 +179,12 @@ function AddRoom({navigation}) {
 
 
         <Button title="Pick an image from camera roll" onPress={pickImage} />
-        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} 
         <Button title="Add Room" onPress={addRoomToDB}/>
         </Card>
 
         </>
+        // once an image is selected it appears on screen with above code beneath pick image
     )
 }
 

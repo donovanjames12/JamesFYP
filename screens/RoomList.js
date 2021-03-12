@@ -19,7 +19,7 @@ function RoomList({navigation}) {
 
     let actions = []
 
-    if(userType == "admin") {
+    if(userType == "admin") { // again, conditional rendering to hide add room option unless an admin
         actions = [
             {
                 text: "Refresh",
@@ -96,7 +96,7 @@ function RoomList({navigation}) {
     const item = ({ item }) => (
         <Card>
             { 
-                userType == "admin" 
+                userType == "admin" // conditional rendering so admin can only deletea room from the UI
                 ? 
                 <View style={styles.row}>
                     <View style={{display: "flex", flexDirection: "column", flexGrow: 1}}>
@@ -127,7 +127,7 @@ function RoomList({navigation}) {
             </Card.Title>
             <Card.Title>
                 <Text>{item.description}</Text>
-            </Card.Title>
+            </Card.Title> 
             <Card.Image source={{uri: `https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/rooms%2F${item.id}?alt=media&token=9eb07b90-e91e-43ba-9def-966c563b6b82`}} /> 
             <Button title="Book" style={styles.button} onPress={() => navigation.navigate("Add Room Booking", {
                 room: item

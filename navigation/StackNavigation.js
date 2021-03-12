@@ -23,19 +23,19 @@ function StackNavigation() {
     return(
         <RootStack.Navigator mode="modal" options={{cardStyle:{flex: 1}}}>
             {
-                userType == null ? 
+                userType == null ? // if user type is null then show only login and register
                     <>
                         <RootStack.Screen name="Login"  options={{ headerShown: false }} component={Login} />
                         <RootStack.Screen name="Registration"  options={{ headerShown: false }} component={Registration} />
                     </>
-                :
+                : // if user is a valid user then they can view the following screens
                     <>
                         <RootStack.Screen name="Main" options={{ headerShown: false }} component={DrawerNavigation} />
                         <RootStack.Screen name="Add Room Booking" component={AddRoomBooking} />    
                         <RootStack.Screen name="Booking Confirmation" options={{ headerShown: false }} component={BookingConfirmation} />
                         {userType == "admin" && <RootStack.Screen name="Add Room" component={AddRoom} />}
-                    </>     
-            } 
+                    </>     // add room option only visible to admin
+            }  
         </RootStack.Navigator>  
     )
 }

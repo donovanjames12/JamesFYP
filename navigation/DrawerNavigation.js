@@ -22,12 +22,12 @@ import { useAuth } from "components/AuthContext"
 
 const Drawer = createDrawerNavigator();
 
-/* signout code got from https://rnfirebase.io/auth/usage */
+
 function DrawerNavigation() {  
   const { userType } = useAuth()
 
-  /* menu providor code here https://www.npmjs.com/package/react-native-popup-menu */ 
-   
+  /* menu providor code here https://www.npmjs.com/package/react-native-popup-menu */   
+  /* signout code got from https://rnfirebase.io/auth/usage */
    // Menu provider button added to right side of drawer header, signout function called when button is selected
    // Code for icons on header obtained here: https://icons.expo.fyi/
      return (
@@ -48,7 +48,7 @@ function DrawerNavigation() {
           <Drawer.Screen name="View Our Rooms" component={RoomList} />
           <Drawer.Screen name="Book A Table" component={AddTableBooking} />
           { 
-            userType == "admin" &&
+            userType == "admin" && // if user type is admin then they can see the additional screens with regard to bookings made
             <>          
               <Drawer.Screen name="View Room Bookings" component={ViewRoomBookings} />
               <Drawer.Screen name="View Table Bookings" component={ViewTableBookings} />

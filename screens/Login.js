@@ -18,8 +18,7 @@ function Login ({navigation}) {
    
      function login() {
         auth.signInWithEmailAndPassword(email, password)
-            .then(() => {
-                
+            .then(() => {             
             }).catch(error => {
                 alert(error.message)
             })
