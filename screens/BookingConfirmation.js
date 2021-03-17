@@ -11,10 +11,10 @@ function BookingConfirmation({navigation, route}) {
     const bookingType = route.params.type // booking type constant to allow differentiation between room and table
     const id = route.params.id // room and tabe id will be booking type differentiators
 
-    // code on how to format dates acquired here: https://stackoverflow.com/questions/45547166/how-to-get-dd-mm-yyyy-format-date/45547206
-    // function usedin below cards to display date in desired format
+    
 
     // conditional inline rendering similar to registration component used here to idetify booking type
+   // booking types room and table are defined in db function in both their respective screens
     return (
          <SafeAreaView style={styles.container}>
             {

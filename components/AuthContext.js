@@ -3,7 +3,7 @@ import { auth, db } from "../firebase"
 
 const AuthContext = React.createContext() // creating auth context
 
-// 23-31 mins simple implementation of auth context
+// 23-31 mins simple implementation of auth context https://www.youtube.com/watch?v=nQVCkqvU1uE
 /* similar approach to the one which I took although instead of user tokens 
 I manually set fields called type in firebase to admin and/or user.
 this video does not use a database for searching the values, however, I do so with the below function
@@ -14,7 +14,8 @@ I used the same approach in my navigation screens.*/
 export function useAuth() {
   return useContext(AuthContext)
 }
- // auth provider function exportedto be used application wide
+
+ // auth provider function exported to be used application wide
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null)
     const [userType, setUserType] = useState(null)
@@ -23,6 +24,7 @@ export function AuthProvider({ children }) {
     // unsubscribe logic and onAuthStateChanged explained here: https://www.javaer101.com/en/article/18077800.html
    useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => { // onAuthStateChanged takes a function as it's only argument. That function is the one that will be invoked whenever the auth state changes.
+            // If user is null, nobody is signed in. 
             if(user) {
                 db.collection("users").doc(user.uid).get() // firestore code to retrieve database data
                     .then(result => {

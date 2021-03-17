@@ -24,6 +24,7 @@ function ViewTableBookings({navigation}) {
         },
     ]; 
 
+    // getting start and end of day code https://stackoverflow.com/questions/8636617/how-to-get-start-and-end-of-day-in-javascript/8636674
      // function to set date picker start date at midnight
     function setStartDate() {
         let x = new Date()
@@ -38,7 +39,7 @@ function ViewTableBookings({navigation}) {
         return x
     }
 
-    // exact same as RoomList, used to fix firestore usage glitch from getRoomBookings.
+    
     // Runs when component is finished rendering. Youtube link on RoomList.
     useEffect(() => {     
         getTableBookings()

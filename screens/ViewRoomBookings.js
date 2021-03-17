@@ -15,6 +15,7 @@ function ViewRoomBooking({navigation}) {
     const [start, setStart] = useState(setStartDate)
     const [end, setEnd] = useState(setEndDate) 
 
+    // getting start and end of day code https://stackoverflow.com/questions/8636617/how-to-get-start-and-end-of-day-in-javascript/8636674
     // function to set date picker start date at midnight
     function setStartDate() {
         let x = new Date()

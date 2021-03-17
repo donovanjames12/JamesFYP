@@ -22,6 +22,8 @@ the navigation container is essentially storing my whole project as the stack na
 contains all screens (drawer navigation also part of the stack) Information on 
 the navigation container can be seen here at he official ract documenatation: https://reactnative.dev/docs/navigation */
 export default function App() {
+
+  // logbox used to ignore errors https://stackoverflow.com/questions/35309385/how-do-you-hide-the-warnings-in-react-native-ios-simulator
   LogBox.ignoreLogs(['Setting a timer'])
 
   const themes = {

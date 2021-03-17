@@ -108,7 +108,7 @@ function RoomList({navigation}) {
                             size={24} 
                             color="black" 
                             style={{marginLeft: "auto"}} 
-                            onPress={() => deleteBooking(item.id)} />
+                            onPress={() => deleteRoom(item.id)} />
                     </View>
                 </View>
                 :
@@ -151,7 +151,7 @@ const handleClick = (name) => {
 // the key extractor is how the item is identified, in this case it is the id of each document retrieved from firestore. 
 // styles are simply how you wish to style the item with the below stylesheet
   
- // flating acion button being called below, link from: https://www.npmjs.com/package/react-native-floating-action
+ // floating acion button being called below, link from: https://www.npmjs.com/package/react-native-floating-action
     return (     
         <>      
             <FlatList
