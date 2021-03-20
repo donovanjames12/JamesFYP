@@ -109,55 +109,38 @@ function AddTableBooking({navigation}) {
         setDate(date)
     }
 
-
-
-
-
     /* Adding inputted data to database from link:
      https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
      // parameters passed in navigate function to be called in booking confirmation
     function addBooking() {
         db.collection("tableBookings").get()
-            .then(docs => {
-                
-                // creating a counter and setting it equal to groupsize field 
-                let counter = 0
-                docs.forEach(doc => {
-                    counter += doc.data().groupSize
-                })
-                // if the group size entered is greater than the available capacity, notification message appears
-                if((100 - counter - groupSize) < 1) {
-                    alert("There are no available tables at this time")
-                } else {
-                    db.collection("tableBookings").add({
+            .then(docs => {       
+                db.collection("tableBookings").add({
+                    name: name,
+                    groupSize: groupSize,
+                    contactNum: contactNum,
+                    timeslot: timeslot,
+                    date: date
+                }).then(doc => {
+                    setName("")
+                    setGroupSize("")
+                    setContactNum("")
+                    setDate(new Date())
+                    setTimeslot("")
+                    navigation.navigate("Booking Confirmation", {
+                        type: "table", // type here is used in booking confirmation, differentiate between room
                         name: name,
                         groupSize: groupSize,
                         contactNum: contactNum,
                         timeslot: timeslot,
                         date: date
-                    }).then(doc => {
-                        setName("")
-                        setGroupSize("")
-                        setContactNum("")
-                        setDate(new Date())
-                        setTimeslot("")
-                        navigation.navigate("Booking Confirmation", {
-                            type: "table", // type here is used in booking confirmation, differentiate between room
-                            name: name,
-                            groupSize: groupSize,
-                            contactNum: contactNum,
-                            timeslot: timeslot,
-                            date: date
-                        })
-                    }).catch(error => {
-                        alert(error.message)
-                    }) 
-                } 
+                    })
+                }).catch(error => {
+                    alert(error.message)
+                }) 
             }).catch(error => {
                 alert(error.message)
             })
-
-
     }
 
     return (

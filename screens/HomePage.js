@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
-import { Card, Image, Text, Button, Icon } from "react-native-elements"
+import { SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, FlatList } from 'react-native'
+import { Card, Image, Text, Button, Icon, Divider } from "react-native-elements"
 import {db, auth} from "../firebase"
 import { useAuth } from "components/AuthContext"
 import DatePicker from "components/DatePicker"
@@ -8,9 +8,13 @@ import DatePicker from "components/DatePicker"
  /* HomePage used in navigation bar */
 function HomePage({navigation}) {
     const { userType } = useAuth()
-    const [roomDate, setRoomDate] = useState(new Date())
-    const [roomBookingList, setRoomBookingList] = useState([])
-
+    const [date, setDate] = useState(new Date())
+    const [rooms, setRooms] = useState([])
+    const [timeslot1, setTimeslot1] = useState(100)
+    const [timeslot2, setTimeslot2] = useState(100)
+    const [timeslot3, setTimeslot3] = useState(100)
+    const [timeslot4, setTimeslot4] = useState(100)
+    const [timeslot5, setTimeslot5] = useState(100)
     /* SafeAreaView used due to screen components extending beyond the physical
      remits of the phone screen, code acquired here: https://reactnative.dev/docs/safeareaview */
 
@@ -20,67 +24,121 @@ function HomePage({navigation}) {
           // getting start and end of day code https://stackoverflow.com/questions/8636617/how-to-get-start-and-end-of-day-in-javascript/8636674
     // function to set date picker start date at midnight
 
-    function handleSetDate(date) {
-        date.setHours(0,0,0,0)
-        setRoomDate(date)
+    useEffect(() => {
+        handleDate(new Date())
+    }, [])
+    
+    function handleDate(date) {
+        setDate(date)
+        
+        const fromDate = new Date(date.setHours(0,0,0,0))
+        const toDate = new Date(date.setHours(23, 59, 59))
+
+        getRoomBookings(fromDate, toDate)
+        getTableBookings(fromDate, toDate)
     }
 
-    useEffect(() => {
-        getRoomBookings()
-    }, [roomDate])
+    async function getRoomBookings(fromDate, toDate) {
+        let roomBookingDocs = await db.collection("roomBookings").where("fromDate", ">", fromDate).where("fromDate", "<", toDate).get().catch(error => alert(error.message))
+        let roomIds = []
 
-    function getRoomBookings() {
+        roomBookingDocs.forEach(doc => {
+            if(!roomIds.includes(doc.data().roomId)) {
+                roomIds.push(doc.data().roomId)
+            }
+        })
+
+        let roomsDocs = await db.collection("rooms").get()
         let rooms = []
-        db.collection("roomBookings").where("fromDate", ">", roomDate).where("fromDate", "<", roomDate+86000000).get()
-        .then(docs => {       
-            alert(docs.size)
-            var tempList = []
-            docs.forEach(doc => {
-                console.log(doc.data)
-                var temp   
-// database queried to display data between entered dates and retrieve bookings from this range
-                temp = doc.data()
 
-                rooms.forEach(room => {
-                    if(room.id == temp.roomId) {
-                        temp.roomNo = room.roomNo
-                        temp.roomType = room.roomType
-                        temp.description = room.roomType
-                        temp.price = room.price
-                    }
-                })
+        roomsDocs.forEach(doc => {
+            let room = doc.data()
+            room.id = doc.id
+            room.available = !roomIds.includes(room.id)
+            rooms.push(room)
+        })
+        
+        setRooms(rooms)
+    }
 
-                temp.id = doc.id
-                tempList.push(temp)
-                console.log(tempList)
-             })
-             setRoomBookingList(tempList)
-            
-        }).catch(error => {
-            console.log(error.message)
+    async function getTableBookings(fromDate, toDate) {
+        setTimeslot1(100)
+        setTimeslot2(100)
+        setTimeslot3(100)
+        setTimeslot4(100)
+        setTimeslot5(100)
+
+        let docs = await db.collection("tableBookings").where("date", ">", fromDate).where("date", "<", toDate).get().catch(error => alert(error.message))
+        let tableBookings = []
+
+        docs.forEach(doc => {
+            let temp = doc.data()
+            temp.id = doc.id
+            tableBookings.push(temp)
+        })
+        
+        tableBookings.forEach(booking => {
+            if(booking.timeslot == "17:00 - 18:00") {
+                setTimeslot1(previousValue => (previousValue - parseInt(booking.groupSize)))
+            } else if(booking.timeslot == "18:00 - 19:00") {
+                setTimeslot2(previousValue => (previousValue - parseInt(booking.groupSize)))
+            } else if(booking.timeslot == "19:00 - 20:00") {
+                setTimeslot3(previousValue => (previousValue - parseInt(booking.groupSize)))
+            } else if(booking.timeslot == "20:00 - 21:00") {
+                setTimeslot4(previousValue => (previousValue - parseInt(booking.groupSize)))
+            } else if(booking.timeslot == "21:00 - 22:00") {
+                setTimeslot5(previousValue => (previousValue - parseInt(booking.groupSize)))
+            }
         })
     }
+
+    const listItem = ({ item }) => (
+        <View style={{flexDirection: "row"}}>
+            <View style={{padding: 5}}>
+                <Text style={{fontWeight: "bold"}}>Room No</Text>
+                <Text style={{fontWeight: "bold"}}>Room Type</Text>
+                <Text style={{fontWeight: "bold"}}>Available</Text>
+            </View>
+            <View style={{padding: 5, marginLeft: 25}}>
+                <Text>{item.roomNo}</Text>
+                <Text>{item.roomType}</Text>
+                <Text>{item.available ? "Yes" : "No"}</Text>
+            </View>
+            <Divider />
+        </View>
+    )
 
     return (
         <ScrollView>
             <SafeAreaView style={styles.container}>
+                <DatePicker date={date} setDate={handleDate}/> 
                 <Card>
                     <Card.Title>Room Availability</Card.Title>
-                    <Text>From</Text>
-                    <DatePicker date={roomDate} setDate={handleSetDate}/>
-                    <Text>To</Text>
-                    <DatePicker date={roomDate} setDate={handleSetDate}/>
-                    <Text>Room No 1 (Double Room): Available</Text>
-                    <Text>Room No 2 (Double Room): Not Available</Text>
-                    <Text>Room No 3 (Double Room): Available</Text>
-                    <Text>Room No 4 (Double Room): Available</Text>
+                    <FlatList
+                        data={rooms}
+                        renderItem={listItem}
+                        keyExtractor={item => item.id}
+                        style={styles.list}
+                    />
                 </Card>
                 <Card>
                     <Card.Title>Table Availability</Card.Title>
-                    <Text>Date</Text>
-                    <DatePicker date={roomDate} setDate={handleSetDate}/>
-                    <Text>Timeslot</Text>
-                    <Text>Remaining number of seats</Text>
+                    <View style={{flexDirection: "row"}}>
+                        <View style={{padding: 5}}>
+                            <Text style={{fontWeight: "bold"}}>17:00 - 18:00</Text>
+                            <Text style={{fontWeight: "bold"}}>18:00 - 19:00</Text>
+                            <Text style={{fontWeight: "bold"}}>19:00 - 20:00</Text>
+                            <Text style={{fontWeight: "bold"}}>20:00 - 21:00</Text>
+                            <Text style={{fontWeight: "bold"}}>21:00 - 22:00</Text>
+                        </View>
+                        <View style={{padding: 5, marginLeft: 25}}>
+                            <Text>Remaining Seats: {timeslot1}</Text>
+                            <Text>Remaining Seats: {timeslot2}</Text>
+                            <Text>Remaining Seats: {timeslot3}</Text>
+                            <Text>Remaining Seats: {timeslot4}</Text>
+                            <Text>Remaining Seats: {timeslot5}</Text>
+                        </View>
+                    </View>
                 </Card>
                 <TouchableOpacity onPress={() => navigation.navigate("View Our Rooms")}>
                     <Card style={styles.card}>
