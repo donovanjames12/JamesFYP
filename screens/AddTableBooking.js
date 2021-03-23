@@ -112,35 +112,50 @@ function AddTableBooking({navigation}) {
     /* Adding inputted data to database from link:
      https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
      // parameters passed in navigate function to be called in booking confirmation
-    function addBooking() {
-        db.collection("tableBookings").get()
-            .then(docs => {       
-                db.collection("tableBookings").add({
-                    name: name,
-                    groupSize: groupSize,
-                    contactNum: contactNum,
-                    timeslot: timeslot,
-                    date: date
-                }).then(doc => {
-                    setName("")
-                    setGroupSize("")
-                    setContactNum("")
-                    setDate(new Date())
-                    setTimeslot("")
-                    navigation.navigate("Booking Confirmation", {
-                        type: "table", // type here is used in booking confirmation, differentiate between room
-                        name: name,
-                        groupSize: groupSize,
-                        contactNum: contactNum,
-                        timeslot: timeslot,
-                        date: date
-                    })
-                }).catch(error => {
-                    alert(error.message)
-                }) 
-            }).catch(error => {
-                alert(error.message)
+    async function addBooking() {
+        const fromDate = new Date(date)
+        fromDate.setHours(0,0,0,0)
+        const toDate = new Date(date)
+        toDate.setHours(23,59,59)
+        
+        let docs = await db.collection("tableBookings").where("date", ">", fromDate).where("date", "<", toDate).where("timeslot", "==", timeslot).get().catch(error => console.log(error.message))
+
+        let availableSeats = 100
+        docs.forEach(doc => {
+            availableSeats -= doc.data().groupSize
+        })
+
+        if(availableSeats < groupSize) {
+            alert(`There are only ${availableSeats} seats remaining for this timeslot.`)
+            return 
+        } 
+            
+        try {
+            await db.collection("tableBookings").add({
+                name: name,
+                groupSize: parseInt(groupSize),
+                contactNum: contactNum,
+                timeslot: timeslot,
+                date: date
             })
+    
+            setName("")
+            setGroupSize("")
+            setContactNum("")
+            setDate(new Date())
+            setTimeslot("")
+    
+            navigation.navigate("Booking Confirmation", {
+                type: "table", // type here is used in booking confirmation, differentiate between room
+                name: name,
+                groupSize: groupSize,
+                contactNum: contactNum,
+                timeslot: timeslot,
+                date: date
+            }) 
+        } catch(error) {
+            alert(error.message)
+        }   
     }
 
     return (

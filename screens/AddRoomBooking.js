@@ -44,7 +44,11 @@ function AddRoomBooking({route, navigation}) {
     const [groupSize, setGroupSize] = useState("")
     const [cardNo, setCardNo] = useState("")
     const [fromDate, setFromDate] = useState(new Date())
-    const [toDate, setToDate] = useState(new Date())
+    const [toDate, setToDate] = useState(() => {
+        let date = new Date()
+        date.setDate(date.getDate() + 1)
+        return date
+    })
 
         /* conditional rendering is used in the inputs, the constants created above are green and red ticks which will be displayed in the event of
      correct or incorrect information being inputted to notify the user, the condiions of the handlers
@@ -119,39 +123,39 @@ function AddRoomBooking({route, navigation}) {
      https://firebase.google.com/docs/firestore/manage-data/add-data on firebase documentation */
 
       // Room cannot be added unless the conditions of all input handlers are met
-    function addBooking() {
+    async function addBooking() {
         if(isNameValid && isEmailValid && isAddressValid && isContactNoValid && isGroupValid && toDate ) 
-        db.collection("roomBookings").doc().set({
-            name: name,  // once conditions are met, data added to roomBookings collection
-            email: email,
-            address: address, 
-            contactNo: contactNo, 
-            groupSize: groupSize,
-            cardNo: cardNo,
-            fromDate: fromDate,
-            toDate: toDate,
-            roomId: route.params.room.id // room id also added to datbase to identify the room booked
-        }).then(() => {
-            setName("")
-            setEmail("")  // data then returned to default values 
-            setAddress("")
-            setContactNo("")
-            setGroupSize("")
-            setCardNo("")
-            setFromDate(new Date())
-            setToDate(new Date())
-
-            /*carrying some data forward to booking confirmation, this is via navigation routes*/
-            navigation.navigate("Booking Confirmation", {
-                type: "room",
-                name: name,   // once below button clicked and successful, navigated to booking confirmation
-                email: email, // name, emails and dates are also routed to booking confirmation as the second parmeter
+            db.collection("roomBookings").doc().set({
+                name: name,  // once conditions are met, data added to roomBookings collection
+                email: email,
+                address: address, 
+                contactNo: contactNo, 
+                groupSize: groupSize,
+                cardNo: cardNo,
                 fromDate: fromDate,
-                toDate: toDate
+                toDate: toDate,
+                roomId: route.params.room.id // room id also added to datbase to identify the room booked
+            }).then(() => {
+                setName("")
+                setEmail("")  // data then returned to default values 
+                setAddress("")
+                setContactNo("")
+                setGroupSize("")
+                setCardNo("")
+                setFromDate(new Date())
+                setToDate(new Date())
+
+                /*carrying some data forward to booking confirmation, this is via navigation routes*/
+                navigation.navigate("Booking Confirmation", {
+                    type: "room",
+                    name: name,   // once below button clicked and successful, navigated to booking confirmation
+                    email: email, // name, emails and dates are also routed to booking confirmation as the second parmeter
+                    fromDate: fromDate,
+                    toDate: toDate
+                })
+            }).catch(error => {
+                console.log(error.message)
             })
-        }).catch(error => {
-            console.log(error.message)
-        })
     }
 
     return (
@@ -236,8 +240,8 @@ function AddRoomBooking({route, navigation}) {
                     <DatePicker date={toDate} setDate={setToDate} style={{flexGrow: 1, marginLeft: 20}}/>
                 </View>
 
-                <Text style={{fontSize: 30, textAlign: "center", marginBottom: 15}}>Total €180</Text>
-
+                <Text style={{fontSize: 30, textAlign: "center", marginBottom: 15}}>Total €{room.price * Math.round(Math.abs((fromDate - toDate) / 86400000))}</Text> 
+{/* https://stackoverflow.com/questions/2627473/how-to-calculate-the-number-of-days-between-two-dates */}       
                 <Button title="Confirm Booking" onPress={addBooking}/> 
             </Card>
 

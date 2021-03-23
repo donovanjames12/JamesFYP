@@ -39,12 +39,21 @@ function HomePage({navigation}) {
     }
 
     async function getRoomBookings(fromDate, toDate) {
-        let roomBookingDocs = await db.collection("roomBookings").where("fromDate", ">", fromDate).where("fromDate", "<", toDate).get().catch(error => alert(error.message))
-        let roomIds = []
+        let roomBookingDocs = await db.collection("roomBookings").get().catch(error => alert(error.message))
 
+        let roomBookings = []
         roomBookingDocs.forEach(doc => {
-            if(!roomIds.includes(doc.data().roomId)) {
-                roomIds.push(doc.data().roomId)
+            if(fromDate > doc.data().fromDate && toDate < doc.data().toDate.toDate()) {
+                let temp = doc.data()
+                temp.id = doc.id
+                roomBookings.push(temp)
+            } 
+        })
+
+        let roomIds = []
+        roomBookings.forEach(booking => {
+            if(!roomIds.includes(booking.roomId)) {
+                roomIds.push(booking.roomId)
             }
         })
 
@@ -58,7 +67,7 @@ function HomePage({navigation}) {
             rooms.push(room)
         })
         
-        setRooms(rooms)
+        setRooms(rooms)  
     }
 
     async function getTableBookings(fromDate, toDate) {
@@ -111,7 +120,7 @@ function HomePage({navigation}) {
     return (
         <ScrollView>
             <SafeAreaView style={styles.container}>
-                <DatePicker date={date} setDate={handleDate}/> 
+                <DatePicker date={date} setDate={handleDate}/>   
                 <Card>
                     <Card.Title>Room Availability</Card.Title>
                     <FlatList

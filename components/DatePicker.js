@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { TouchableNativeFeedback, View } from "react-native"
+import { TouchableNativeFeedback, View, Platform} from "react-native"
 import { Text, Button, Input } from "react-native-elements"
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate } from "../helpers"
@@ -17,16 +17,21 @@ function DatePicker({date, setDate, style}) {
     }
 
     // code also acquired from the above link 
-    return (
-        <View style={style}>
-            <DateTimePicker 
-                value={date}
-                mode={"date"}
-                display="default"
-                style={{width: "100%"}}
-                onChange={onChange}
-            />
-        </View>    
+    return (      
+        <>
+            
+            {Platform.OS == "android" && <Button title={formatDate(date)} onPress={() => setShow(true)}/>}
+            {show && 
+            <View style={style}>
+                <DateTimePicker 
+                    value={date}
+                    mode={"date"}
+                    display="default"
+                    style={{width: "100%"}}
+                    onChange={onChange}
+                />
+            </View>}
+        </>
     )
 }
 

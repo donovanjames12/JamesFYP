@@ -24,7 +24,7 @@ the navigation container can be seen here at he official ract documenatation: ht
 export default function App() {
 
   // logbox used to ignore errors https://stackoverflow.com/questions/35309385/how-do-you-hide-the-warnings-in-react-native-ios-simulator
-  LogBox.ignoreLogs(['Setting a timer'])
+  LogBox.ignoreLogs(['Setting a timer', 'RNDatePickerAndroid.dismis', 'VirtualizedLists'])
 
   const themes = {
     light: {
