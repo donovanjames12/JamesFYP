@@ -16,6 +16,8 @@ import { auth } from "../firebase"
 import AddTableBooking from "../screens/AddTableBooking";
 import ViewTableBookings from "../screens/ViewTableBookings"
 import { useAuth } from "components/AuthContext"
+import Takeaway from "screens/Takeaway"
+import ViewOrders from "screens/ViewOrders"
 
 /* Declaring drawer navigator*/
 /*Drawer navigation code https://reactnavigation.org/docs/drawer-based-navigation/ */
@@ -52,9 +54,10 @@ function DrawerNavigation() {
             <>          
               <Drawer.Screen name="View Room Bookings" component={ViewRoomBookings} />
               <Drawer.Screen name="View Table Bookings" component={ViewTableBookings} />
+              <Drawer.Screen name="Takeaway List" component={Takeaway} />
+              <Drawer.Screen name="View Orders" component={ViewOrders} />
             </>
           }
-
         </Drawer.Navigator>    
       </MenuProvider>  
     )

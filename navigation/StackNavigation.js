@@ -10,6 +10,7 @@ import BookingConfirmation from "../screens/BookingConfirmation"
 import Login from "../screens/Login"
 import Registration from "../screens/Registration"
 import DrawerNavigation from "./DrawerNavigation"
+import AddMenuItem from "../screens/AddMenuItem"
 
 import { useAuth } from "components/AuthContext"
 
@@ -33,7 +34,12 @@ function StackNavigation() {
                         <RootStack.Screen name="Main" options={{ headerShown: false }} component={DrawerNavigation} />
                         <RootStack.Screen name="Add Room Booking" component={AddRoomBooking} />    
                         <RootStack.Screen name="Booking Confirmation" options={{ headerShown: false }} component={BookingConfirmation} />
-                        {userType == "admin" && <RootStack.Screen name="Add Room" component={AddRoom} />}
+                        {userType == "admin" && 
+                            <>
+                                <RootStack.Screen name="Add Room" component={AddRoom} />
+                                <RootStack.Screen name="Add Menu Item" component={AddMenuItem} />
+                            </>
+                        }
                     </>     // add room option only visible to admin
             }  
         </RootStack.Navigator>  
