@@ -6,6 +6,7 @@ import { db } from "../firebase"
 import { useAuth } from "components/AuthContext"
 import { FontAwesome5, FontAwesome, AntDesign } from '@expo/vector-icons'; 
 
+// usestate being declared
 function Takeaway({navigation}) {
     const [menuItems, setMenuItems] = useState([])
     const [order, setOrder] = useState([])
@@ -47,18 +48,20 @@ function Takeaway({navigation}) {
         getMenu()
     }, [])
 
+    // firebase code retrieiving menu items from the db
     async function getMenu() {
         let docs = await db.collection("menu").get().catch(error => alert(error.message))
-
+    // menu list is an empty array
         let menuList = []
         docs.forEach(doc => {
-            let item = doc.data()
-            item.id = doc.id
-            menuList.push(item)
+            let item = doc.data() // item is a temporary variable made equal to document data
+            item.id = doc.id // menu id retrieved by setting it equal to document data
+            menuList.push(item) // temp variable pushed onto menulist
         })
-        setMenuItems(menuList)
+        setMenuItems(menuList) // array made equal to the above usestate
     }
 
+    // deleting a document here: https://firebase.google.com/docs/firestore/manage-data/delete-data
     function deleteTakeawayItem(id) {
         db.collection("menu").doc(id).delete()
             .then(() => {
@@ -66,6 +69,7 @@ function Takeaway({navigation}) {
             }).catch(error => alert(error.message))
     }
 
+    // function to add item to order
     function addToOrder(newItem) {
         let orderList = order
 
@@ -86,7 +90,7 @@ function Takeaway({navigation}) {
         setUpdate(prev => prev + 1)
         setOrder(orderList)
     }
-
+ // function to remove order item from list
     function removeFromOrder(index) {
         let orderList = order
 
@@ -99,20 +103,24 @@ function Takeaway({navigation}) {
         setOrder(orderList)
         setUpdate(prev => prev + 1)
     }
-
+  // adding the order to firestore collection
     function submitOrder() {
-        console.log(order)
-
         db.collection("orders")
             .add({ 
                 name: name,
                 phoneNum: phoneNum,
                 items: order
             })
-            .then(() => alert("Order Submitted"))
+            .then(() => {
+                setName("")
+                setPhoneNum("")
+                navigation.navigate("Home")
+                alert("Order Submitted")
+            })
             .catch(error => alert(error.message))  
     }
 
+    // item used for flatlist to display menu products
     const item = ({item}) => (
         <Card>  
             { 
@@ -128,7 +136,7 @@ function Takeaway({navigation}) {
                             size={24} 
                             color="black" 
                             style={{marginLeft: "auto"}} 
-                            onPress={() => deleteTakeawayItem(item.id)} 
+                            onPress={() => deleteTakeawayItem(item.id)} // delete function called here
                         />
                     </View>
                 </View>
@@ -150,6 +158,7 @@ function Takeaway({navigation}) {
         </Card>
     )
 
+    // item code to display ordered items in list
     const orderItem = ({item, index}) => (
         <ListItem key={item.id}>
             <Avatar source={{uri: `https://firebasestorage.googleapis.com/v0/b/fypjames-a754f.appspot.com/o/menu%2F${item.id}?alt=media&token=9eb07b90-e91e-43ba-9def-966c563b6b82`}} />
@@ -161,11 +170,11 @@ function Takeaway({navigation}) {
                 size={24} 
                 color="black" 
                 style={{marginLeft: "auto"}} 
-                onPress={() => removeFromOrder(index)} 
+                onPress={() => removeFromOrder(index)} // above remove order function called here
             />
         </ListItem>
     )
-
+// code for floating action button, link in roomlist
     function handleClick(name) {
         if(name == "floatingRefresh") {
             getMenu()
@@ -174,16 +183,17 @@ function Takeaway({navigation}) {
         }
     }
 
+    // scrollview allows user to scroll on screen
     return (
         <>
-            <ScrollView >
+            <ScrollView > 
                 <Card>
-                    <Text>Order for collection. Pay on collection.</Text>
+                    <Text>Order for same day collection. Pay on arrival.</Text>
                 </Card> 
                 <Card>
                     <Card.Title>Your Order</Card.Title>
                     <Divider />
-                    <FlatList
+                    <FlatList // flatlist displaying orderinformation within a card
                         data={order}
                         extraData={update}
                         renderItem={orderItem}
@@ -191,14 +201,14 @@ function Takeaway({navigation}) {
                         style={styles.list}
                     />
                 </Card>
-                <FlatList
+                <FlatList // flatlist displaying menu items available to order
                     data={menuItems}
                     renderItem={item}
                     keyExtractor={item => item.id}
                     style={styles.list}
                 />
                 <Card>
-                    <Input 
+                    <Input  // input information for customer name and number when ordering takeawy
                         label="Name"
                         onChangeText={text => setName(text)}  
                         value={name} 
@@ -207,6 +217,7 @@ function Takeaway({navigation}) {
                         label="Phone Number"
                         onChangeText={text => setPhoneNum(text)}  
                         value={phoneNum} 
+                        keyboardType="decimal-pad"
                     />
                     <Button title="Submit Order" onPress={submitOrder}/>
                 </Card>        

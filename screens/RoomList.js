@@ -84,7 +84,7 @@ function RoomList({navigation}) {
             .then(() => {
                 getRooms()
             }).catch(error => {
-                console.log(error.message)
+                
             })
         
     }

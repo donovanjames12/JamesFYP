@@ -3,11 +3,13 @@ import { Input, Button, Image, Card } from "react-native-elements"
 import * as ImagePicker from 'expo-image-picker';
 import { db, storage } from "../firebase";
 
+// useState for adding menu items
 function AddMenuItem({navigation}) {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
 
+    // upload image code as used in add room
     const [image, setImage] = useState(null);
 
     useEffect(() => {
@@ -45,6 +47,7 @@ function AddMenuItem({navigation}) {
         }
     }
 
+    // function to add menu item to menu collection in firestore
     function add() {
         db.collection("menu").add({
             title: title,
@@ -86,7 +89,7 @@ function AddMenuItem({navigation}) {
                     multiline={true}
                     keyboardType="decimal-pad"
                 />
-
+ 
                 <Button title="Select Image" onPress={pickImage} />
                 {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}   
 

@@ -9,24 +9,27 @@ import { FontAwesome } from '@expo/vector-icons';
 function ViewOrders() {
     const [orders, setOrders] = useState([])
 
+    // useeffect to ensure orders loaded once when page renders and not consistently spage is open
     useEffect(() => {
         loadOrders()
     }, [])
 
+    // all orders being loaded from the orders collection
     async function loadOrders() {
         let docs = await db.collection("orders").get()
 
-        let orderList = []
+        let orderList = [] // empty array
         docs.forEach(doc => {
-            let temp = doc.data()
-            temp.id = doc.id
-            orderList.push(temp)
+            let temp = doc.data() // temp variable made equal to document data
+            temp.id = doc.id // id retrieved by setting temp = to document id
+            orderList.push(temp) // temp variable (with id) pushed onto empty array
         })
 
-        setOrders(orderList)
+        setOrders(orderList) // array made = to above usestate
         console.log(orders)
     }
 
+     // deleting a document here: https://firebase.google.com/docs/firestore/manage-data/delete-data
     function deleteOrder(id) {
         db.collection("orders").doc(id).delete()
             .then(() => {
@@ -34,9 +37,9 @@ function ViewOrders() {
             })
     }
 
-    const item = ({item}) => (
-        <Card key={item.id}>
-            <View style={styles.row}>
+    const item = ({item}) => ( // item for displaying order data in flatlist, used throughout project, used by NetNinja on Youtube
+        <Card key={item.id}> 
+            <View style={styles.row}> 
                 <View style={{display: "flex", flexDirection: "column", flexGrow: 1}}>
                     <Text style={{fontWeight: "bold", fontSize: 20}}>Order Details</Text>
                 </View>
@@ -45,8 +48,8 @@ function ViewOrders() {
                         name="trash-o" 
                         size={24} 
                         color="black" 
-                        style={{marginLeft: "auto"}} 
-                        onPress={() => deleteOrder(item.id)} />
+                        style={{marginLeft: "auto"}}  // delete order function called below
+                        onPress={() => deleteOrder(item.id)} /> 
                 </View>
             </View>
             <View style={{flexDirection: "row", paddingLeft: 10, paddingRight: 10, marginBottom: 25}}>
@@ -60,7 +63,7 @@ function ViewOrders() {
                 </View>
             </View>
 
-            {
+            { // menu item images being displayed in order
                 item.items.map(item => (
                     <>
                         <ListItem>
@@ -72,7 +75,7 @@ function ViewOrders() {
             }
         </Card>
     )
-
+ // code again, for the use action button, link in roomlist
     const actions = [
         {
             text: "Refresh",
@@ -88,7 +91,7 @@ function ViewOrders() {
         }
     }
 
-
+    // takeaway orders being displayed ina flatlist
     return (
         <>
             <ScrollView>

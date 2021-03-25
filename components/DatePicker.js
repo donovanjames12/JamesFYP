@@ -20,8 +20,7 @@ function DatePicker({date, setDate, style}) {
     return (      
         <>
             
-            {Platform.OS == "android" && <Button title={formatDate(date)} onPress={() => setShow(true)}/>}
-            {show && 
+{/*             {Platform.OS == "android" && <Button title={formatDate(date)} onPress={() => setShow(true)}/>} */}
             <View style={style}>
                 <DateTimePicker 
                     value={date}
@@ -30,7 +29,7 @@ function DatePicker({date, setDate, style}) {
                     style={{width: "100%"}}
                     onChange={onChange}
                 />
-            </View>}
+            </View>
         </>
     )
 }

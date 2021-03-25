@@ -49,13 +49,13 @@ function DrawerNavigation() {
           <Drawer.Screen name="Home" component={HomePage} />
           <Drawer.Screen name="View Our Rooms" component={RoomList} />
           <Drawer.Screen name="Book A Table" component={AddTableBooking} />
+          <Drawer.Screen name="Takeaway List" component={Takeaway} />
           { 
             userType == "admin" && // if user type is admin then they can see the additional screens with regard to bookings made
             <>          
               <Drawer.Screen name="View Room Bookings" component={ViewRoomBookings} />
               <Drawer.Screen name="View Table Bookings" component={ViewTableBookings} />
-              <Drawer.Screen name="Takeaway List" component={Takeaway} />
-              <Drawer.Screen name="View Orders" component={ViewOrders} />
+              <Drawer.Screen name="View Takeaway Orders" component={ViewOrders} />
             </>
           }
         </Drawer.Navigator>    

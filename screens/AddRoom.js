@@ -143,7 +143,7 @@ function AddRoom({navigation}) {
         <>
         <Card style={styles.view}>  
             <Input 
-                label="Price"
+                label="Price Per-Night"
                 style={styles.textInput} 
                 onChangeText={text => handlePrice(text)} // when text is entered, handler requirements checked
                 value={price}
